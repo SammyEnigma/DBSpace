@@ -1,0 +1,17 @@
+insert into Occupation values ('Welder','One who welds metals',NULL);
+insert into Occupation values ('Miner','One who mines',NULL);
+insert into Occupation values ('Cook','One who prepares meals',NULL);
+insert into Occupation values ('Hostess','wait person',NULL);
+insert into Occupation values ('Cashier','One who rings people up',NULL);
+insert into Occupation values ('Teller','Bank employee',NULL);
+insert into Occupation values ('Ski instructor','One who teaches skiing',NULL);
+insert into Occupation values ('Teacher','One who teaches students',NULL);
+insert into Occupation values ('Principal','One who governs the school',NULL);
+insert into Occupation values ('Superintendant','One who runs the school',NULL);
+insert into Occupation values ('Professor','One who teaches at the college level',NULL);
+insert into Occupation values ('Real Estate Broker','One who sells properties',NULL);
+insert into Occupation values ('Security guard','One who patrols',NULL);
+insert into Occupation values ('Sheriff','',NULL);
+insert into Occupation values ('Police officer','One who serves and protects',NULL);
+insert into Occupation values ('Barista','One who serves coffee',NULL);
+insert into Occupation values ('Baker','One who bakes',NULL);
