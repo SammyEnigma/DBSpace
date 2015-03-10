@@ -1,0 +1,69 @@
+D:\DBSpace [master]> history
+
+  Id CommandLine
+  -- -----------
+   1 cd d:\BLT
+   2 ls
+   3 cd ..
+   4 ls
+   5 mkdir AttemptToRecover
+   6 cd .\AttemptToRecover
+   7 ls
+   8 git clone https://github.com/okkam1/BLT.git
+   9 cd .\BLT
+  10 git checkout -b Recover
+  11 copy D:\BLT\* D:\AttemptToRecover\BLT
+  12 ls
+  13 copy --help
+  14 cp --help
+  15 cp -?
+  16 git status
+  17 git add
+  18 git add .
+  19 git status
+  20 git commit
+  21 git push origin Recover
+  22 cd D:\BLT
+  23 cd .\inetpub
+  24 cd ..
+  25 git branch
+  26 git branch
+  27 cd D:\DBSpace
+  28 ls
+  29 rm BLT
+  30 ls
+  31 rm -r BLT
+  32 rm -rf BLT
+  33 ls
+  34 cd BLT
+  35 ls
+  36 cd ..
+  37 ls
+  38 echo # DBSpace >> README.md
+  39 cmd
+  40 git init
+  41 git add README.md
+  42 git commit -m "Added readme to tracking and committing locally"
+  43 git remote add origin https://github.com/liamehinc/DBSpace.git
+  44 git push -u origin master
+  45 copy D:\BLT\DB DB
+  46 ls
+  47 cd DB
+  48 ls
+  49 cd ..
+  50 ls
+  51 copy D:\BLT\DB\* DB
+  52 git status
+  53 ls
+  54 cd DB
+  55 ls
+  56 ls -ls
+  57 cd ..
+  58 git add DB
+  59 git status
+  60 git status
+  61 git add .
+  62 git status
+  63 git commit -a -m "Migrated DB folder from BLT web repository"
+  64 git push -u origin master
+  65 git remote -v
