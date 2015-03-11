@@ -2,16 +2,29 @@ USE [master]
 
 DECLARE @BaseBackupPath nvarchar(500)
 		, @FullDBBackupFileName nvarchar(500)
+		, @PublicBaseBackupPath nvarchar(500)
+		, @PublicFullDBBackupFileName nvarchar(500)
 		, @DiffDBBackupFileName nvarchar(500)
-		, @LogDBBackupFileName nvarchar(500);
+		, @LogDBBackupFileName nvarchar(500)
+		, @BackupTimeStamp nvarchar(100);
 
-SET @BaseBackupPath = N'Y:\Backup\WIN-1M8NQQ69OEH\LCCHPDev\';
+ Select @BackupTimeStamp = replace(replace(replace(convert(nvarchar(50), getdate(), 120), ' ',''),':',''),'-','')
+
+
+SET @BaseBackupPath = N'Y:\Backup\WIN-1M8NQQ69OEH\LCCHPDev\' + @BackupTimeStamp + '-';
 SET @FullDBBackupFileName = @BaseBackupPath + N'LCCHPDevPromotetoLCCHPPublic.bak';
+SET @PublicBaseBackupPath = N'Y:\Backup\WIN-1M8NQQ69OEH\LCCHPPublic\' + @BackupTimeStamp + '-';
+SET @PublicFullDBBackupFileName = @PublicBaseBackupPath + N'LCCHPPublic.bak';
 SET @DiffDBBackupFileName = NULL;
 SET @LogDBBackupFileName = NULL;
 
+select 'Backing LCCHPDev up to ' + @FullDBBackupFileName
 BACKUP DATABASE [LCCHPDev] TO  DISK = @FullDBBackupFileName
  WITH  COPY_ONLY, NOFORMAT, INIT,  NAME = N'LCCHPDev-Full Database Backup', SKIP, NOREWIND, NOUNLOAD,  STATS = 10
+
+Select 'Backing LCCHPPublic to ' + @PublicFullDBBackupFileName
+BACKUP DATABASE [LCCHPPublic] TO  DISK = @PublicFullDBBackupFileName
+ WITH  COPY_ONLY, NOFORMAT, INIT,  NAME = N'LCCHPPublic-Full Database Backup', SKIP, NOREWIND, NOUNLOAD,  STATS = 10
 
 ALTER DATABASE [LCCHPPublic] SET SINGLE_USER WITH ROLLBACK IMMEDIATE
 RESTORE DATABASE [LCCHPPublic] FROM  
