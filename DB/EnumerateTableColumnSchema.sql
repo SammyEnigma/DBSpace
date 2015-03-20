@@ -47,3 +47,5 @@ drop table ##TableColumnDetails
 
 
 -- usp_columnDetails 'AccessAgreement'
+
+
