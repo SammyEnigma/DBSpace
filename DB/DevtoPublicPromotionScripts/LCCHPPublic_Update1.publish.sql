@@ -72,6 +72,14 @@ EXECUTE sp_dropextendedproperty @name = N'MS_Description', @level0type = N'SCHEM
 
 
 GO
+PRINT N'Dropping [dbo].[DF_PersonToStatus_StatusDate]...';
+
+
+GO
+ALTER TABLE [dbo].[PersonToStatus] DROP CONSTRAINT [DF_PersonToStatus_StatusDate];
+
+
+GO
 PRINT N'Dropping [dbo].[CK_PositiveRange]...';
 
 
@@ -147,6 +155,15 @@ CREATE TABLE [dbo].[TravelNotes] (
 
 
 GO
+PRINT N'Creating [dbo].[DF_PersonToStatus_StatusDate]...';
+
+
+GO
+ALTER TABLE [dbo].[PersonToStatus]
+    ADD CONSTRAINT [DF_PersonToStatus_StatusDate] DEFAULT (CONVERT([date],getdate())) FOR [StatusDate];
+
+
+GO
 PRINT N'Creating [dbo].[DF_TravelNotes_CreatedDate]...';
 
 
@@ -178,6 +195,39 @@ ALTER trigger [dbo].[trUpdateStatus] on [dbo].[TargetStatus] AFTER UPDATE
 
 	end
 GO
+PRINT N'Creating [dbo].[udf_DoesPropertyExist]...';
+
+
+GO
+-- =============================================
+-- Author:		Liam Thier
+-- Create date: 20150322
+-- Description:	Function to check for duplicate property
+-- =============================================
+CREATE FUNCTION udf_DoesPropertyExist 
+(
+	-- Add the parameters for the function here
+	@AddressLine1 varchar(100),
+	@City varchar(50),
+	@State char(2),
+	@ZipCode varchar(12)
+)
+RETURNS int
+AS
+BEGIN
+	-- Declare the return variable here
+	DECLARE @PropertyID int
+
+	-- Add the T-SQL statements to compute the return value here
+	SELECT @PropertyID = PropertyID from Property where
+		replace(AddressLine1,'.','') = replace(@AddressLine1,'.','') and City = @City 
+		and [State] = @State and Zipcode = @ZipCode
+	
+	-- Return the result of the function
+	RETURN @PropertyID
+
+END
+GO
 PRINT N'Creating [dbo].[vNursingMothers]...';
 
 
@@ -196,6 +246,108 @@ AS
 	On Q1.QuestionnaireID = Q2.QuestionnaireID
 	INNER JOIN Person AS P on P.PersonID = Q1.PersonID
 	where Q1.isNursing = 1
+GO
+PRINT N'Altering [dbo].[usp_InsertNewBloodLeadTestResultsWebScreen]...';
+
+
+GO
+-- =============================================
+-- Author:		Liam Thier
+-- Create date: 20141217
+-- Description:	stored procedure to insert data retrieved from 
+--				the Blood Lead Test Results web screen
+-- =============================================
+ALTER PROCEDURE [dbo].[usp_InsertNewBloodLeadTestResultsWebScreen] 
+	-- Add the parameters for the stored procedure here
+	@Person_ID int = NULL, 
+	@Sample_Date date = NULL,
+	@Lab_Date date = Null,
+	@Blood_Lead_Result numeric(9,4)= NULL, -- Is this Lead value?
+	@Flag INT = 365, -- flag follow up date
+	@Test_Type tinyint = NULL, -- SampleTypeID need to determine if/how new testTypes are created
+	@Lab varchar(50) = NULL,  -- is this necessary i think the lab should be selected from a drop down with the option to add a new lab and an id should be passed?
+	@Lab_ID int = NULL,
+	@Child_Status_Code smallint = NULL, -- StatusID need to determine if/how new statusCodes are created
+	@Child_Status_Date date = NULL,
+	@Hemoglobin_Value numeric(9,4) = NULL,
+	@DEBUG bit = 0,
+	@Blood_Test_Results_ID int OUTPUT
+AS
+BEGIN
+	-- SET NOCOUNT ON added to prevent extra result sets from
+	-- interfering with SELECT statements.
+	SET NOCOUNT ON;
+
+	DECLARE @BloodTestResult_return_value int, @RetestDate_return_value int
+			,@Retest_Date date, @ChildStatusCode_return_value int, @ErrorLogID int;
+
+	-- set default date if necessary 
+	IF (@Sample_Date is null) 
+	BEGIN
+		set @Sample_Date = GetDate();
+		RAISERROR ('Need to specify the SampleDate, setting to today by default', 5, 0);
+	END
+	
+	IF (@Person_ID IS NULL)
+	BEGIN
+		RAISERROR ('Client name must be supplied', 11, -1);
+		RETURN;
+	END;
+	BEGIN TRY
+		EXEC	@BloodTestResult_return_value = [dbo].[usp_InsertBloodTestResults]
+				@isBaseline = NULL,
+				@PersonID = @Person_ID,
+				@SampleDate = @Sample_Date,
+				@LabSubmissionDate = @Lab_Date,
+				@LeadValue = @Blood_Lead_Result,
+				@LeadValueCategoryID = NULL,
+				@HemoglobinValue = @Hemoglobin_Value,
+				@HemoglobinValueCategoryID = NULL,
+				@HematocritValueCategoryID = NULL,
+				@LabID = @Lab_ID,
+				@BloodTestCosts = NULL,
+				@sampleTypeID = @Test_Type,
+				@New_Notes = NULL,
+				@TakenAfterPropertyRemediationCompleted = NULL,
+				@BloodTestResultID = @Blood_Test_Results_ID OUTPUT
+
+		IF (@Child_Status_Code IS NOT NULL)
+		BEGIN
+			IF (@Child_Status_Date IS NULL)
+				SELECT @Child_Status_Date = GetDate();
+			IF @DEBUG = 1
+				SELECT '@ChildStatusCode_return_value = [dbo].[usp_InsertPersontoStatus] @PersonID = @Person_ID, @StatusID = @Child_Status_Code, @StatusDate = @Child_Status_Date' 
+							,@Person_ID , @Child_Status_Code, @Child_Status_Date
+
+			EXEC	@ChildStatusCode_return_value = [dbo].[usp_InsertPersontoStatus]
+					@PersonID = @Person_ID,
+					@StatusID = @Child_Status_Code,
+					@StatusDate = @Child_Status_Date
+		END
+
+		-- set the retest date based on integer value passed in as Flag
+		SET @Retest_Date = DATEADD(dd,@Flag,@Sample_Date);
+
+		-- update Person table with the new retest date
+		EXEC	@RetestDate_return_value = [dbo].[usp_upPerson]
+				@Person_ID = @Person_ID,
+				@New_RetestDate = @Retest_Date;
+	END TRY
+	BEGIN CATCH
+	    -- Call procedure to print error information.
+		EXECUTE dbo.uspPrintError;
+
+		-- Roll back any active or uncommittable transactions before
+		-- inserting information in the ErrorLog.
+		IF XACT_STATE() <> 0
+		BEGIN
+			ROLLBACK TRANSACTION;
+		END
+
+		EXECUTE dbo.uspLogError @ErrorLogID = @ErrorLogID OUTPUT;
+		RETURN ERROR_NUMBER()
+	END CATCH; 	
+END
 GO
 PRINT N'Altering [dbo].[usp_upFamily]...';
 
@@ -295,6 +447,196 @@ BEGIN
 	END CATCH; 
 END
 GO
+PRINT N'Altering [dbo].[usp_InsertProperty]...';
+
+
+GO
+
+
+-- =============================================
+-- Author:		William Thier
+-- Create date: 20140817
+-- Description:	Stored Procedure to insert new property records
+-- =============================================
+
+ALTER PROCEDURE [dbo].[usp_InsertProperty]   -- usp_InsertProperty 
+	-- Add the parameters for the stored procedure here
+	@ConstructionTypeID tinyint = NULL,
+	@AreaID int = NULL,
+	@isinHistoricDistrict bit = NULL, 
+	@isRemodeled bit = NULL,
+	@RemodelDate date = NULL,
+	@isinCityLimits bit = NULL,
+	-- @StreetNumber smallint = NULL,
+	@AddressLine1 varchar(100) = NULL,
+	-- @StreetSuffix varchar(20) = NULL,
+	@Apartmentnumber varchar(10) = NULL,
+	@City varchar(50) = NULL,
+	@State char(2) = NULL,
+	@Zipcode varchar(12) = NULL,
+	@YearBuilt date = NULL,
+	@Ownerid int = NULL,
+	@isOwnerOccuppied bit = NULL,
+	@ReplacedPipesFaucets tinyint = 0,
+	@TotalRemediationCosts money = NULL,
+	@New_PropertyNotes varchar(3000) = NULL,
+	@isResidential bit = NULL,
+	@isCurrentlyBeingRemodeled bit = NULL,
+	@hasPeelingChippingPaint bit = NULL,
+	@County varchar(50) = NULL,
+	@isRental bit = NULL,
+	@OverRideDuplicate bit = 0,
+	@PropertyID int OUTPUT
+
+AS
+BEGIN
+	-- SET NOCOUNT ON added to prevent extra result sets from
+	-- interfering with SELECT statements.
+	SET NOCOUNT ON;
+
+	DECLARE @ErrorLogID int, @NotesID int;
+    -- Insert statements for procedure here
+
+
+	BEGIN TRY
+		SELECT @PropertyID =
+				--replace(AddressLine1,'.','') = replace(@AddressLine1,'.','') and City = @City 
+				--and [State] = @State and Zipcode = @ZipCode
+				[dbo].udf_DoesPropertyExist (
+						@AddressLine1,
+						@City,
+						@State,
+						@ZipCode
+						)
+
+		if (@PropertyID iS NOT NULL AND @OverrideDuplicate = 0)
+		BEGIN
+			DECLARE @ErrorString VARCHAR(3000);
+			SET @ErrorString = 'Property Address ' + @AddressLine1 + ', ' + @City + ', ' + @State + ', ' + @ZipCode
+			                   + ' '  + ' appears to be a duplicate of: ' + cast(@PropertyID as varchar(30));
+			RAISERROR (@ErrorString, 11, -1);
+--			RAISERROR('@PropertyID exists: @AddressLine1, @City, @State, @ZipCode', 11, -1);
+			RETURN;
+		END
+		 INSERT into property (ConstructionTypeID, AreaID, isinHistoricDistrict, isRemodeled, RemodelDate, 
+							  isinCityLimits, AddressLine1, ApartmentNumber, City, [State], Zipcode,
+							  YearBuilt, OwnerID, isOwnerOccuppied, ReplacedPipesFaucets, TotalRemediationCosts,
+							  isResidential, isCurrentlyBeingRemodeled, hasPeelingChippingPaint, County, isRental) 
+					 Values ( @ConstructionTypeID, @AreaID, @isinHistoricDistrict, @isRemodeled, @RemodelDate, 
+							  @isinCityLimits, @AddressLine1, @ApartmentNumber, @City, @State, @Zipcode,
+							  @YearBuilt, @OwnerID, @isOwnerOccuppied, @ReplacedPipesFaucets, @TotalRemediationCosts,
+							  @isResidential, @isCurrentlyBeingRemodeled, @hasPeelingChippingPaint, @County, @isRental);
+		SET @PropertyID = SCOPE_IDENTITY();
+
+		IF (@New_PropertyNotes IS NOT NULL)
+			EXEC	[dbo].[usp_InsertPropertyNotes]
+								@Property_ID = @PropertyID,
+								@Notes = @New_PropertyNotes,
+								@InsertedNotesID = @NotesID OUTPUT
+	END TRY
+	BEGIN CATCH
+		-- Call procedure to print error information.
+		EXECUTE dbo.uspPrintError;
+
+		-- Roll back any active or uncommittable transactions before
+		-- inserting information in the ErrorLog.
+		IF XACT_STATE() <> 0
+		BEGIN
+			ROLLBACK TRANSACTION;
+		END
+
+		EXECUTE dbo.uspLogError @ErrorLogID = @ErrorLogID OUTPUT;
+		RETURN ERROR_NUMBER()
+	END CATCH;
+END
+GO
+PRINT N'Altering [dbo].[usp_InsertPerson]...';
+
+
+GO
+
+
+-- =============================================
+-- Author:		William Thier
+-- Create date: 20130506
+-- Description:	Stored Procedure to insert new people records
+-- =============================================
+-- DROP PROCEDURE usp_InsertPerson
+ALTER PROCEDURE [dbo].[usp_InsertPerson]   -- usp_InsertPerson "Bonifacic",'James','Marco','19750205','M'
+	-- Add the parameters for the stored procedure here
+	@FirstName varchar(50) = NULL,
+	@MiddleName varchar(50) = NULL,
+	@LastName varchar(50) = NULL, 
+	@BirthDate date = NULL,
+	@Gender char(1) = NULL,
+	@StatusID smallint = NULL,
+	@ForeignTravel bit = NULL,
+	@OutofSite bit = NULL,
+	@EatsForeignFood bit = NULL,
+	@PatientID smallint = NULL,
+	@RetestDate datetime = NULL,
+	@Moved bit = NULL,
+	@MovedDate date = NULL,
+	@isClosed bit = 0,
+	@isResolved bit = 0,
+	@New_Notes varchar(3000) = NULL,
+	@GuardianID int = NULL,
+	@isSmoker bit = NULL,
+	@OverrideDuplicate bit = 0,
+	@PID int OUTPUT 
+AS
+BEGIN
+	-- SET NOCOUNT ON added to prevent extra result sets from
+	-- interfering with SELECT statements.
+	SET NOCOUNT ON;
+
+	DECLARE @ErrorLogID int, @NotesID int;
+
+	-- set default retest date if none specified
+	IF @RetestDate is null
+		SET @RetestDate = DATEADD(yy,1,GetDate());
+	
+	Select @PID = PersonID from Person where Lastname = @LastName and FirstName = @FirstName AND BirthDate = @BirthDate;
+	IF (@PID IS NOT NULL AND @OverrideDuplicate = 0)
+	BEGIN
+		DECLARE @ErrorString VARCHAR(3000);
+		SET @ErrorString ='Person appears to be a duplicate of personID: ' + cast(@PID as varchar(256))
+		RAISERROR (@ErrorString, 11, -1);
+		RETURN;
+	END	
+
+    -- Insert statements for procedure here
+	BEGIN TRY
+		 INSERT into person ( LastName,  FirstName,  MiddleName,  BirthDate,  Gender,  StatusID, 
+							  ForeignTravel,  OutofSite,  EatsForeignFood,  PatientID,  RetestDate, 
+							  Moved,  MovedDate,  isClosed,  isResolved,  GuardianID,  isSmoker) 
+					 Values (@LastName, @FirstName, @MiddleName, @BirthDate, @Gender, @StatusID,
+							 @ForeignTravel, @OutofSite, @EatsForeignFood, @PatientID, @RetestDate,
+							 @Moved, @MovedDate, @isClosed, @isResolved,  @GuardianID, @isSmoker);
+		SET @PID = SCOPE_IDENTITY();
+
+		IF (@New_Notes IS NOT NULL)
+			EXEC	[dbo].[usp_InsertPersonNotes]
+								@Person_ID = @PID,
+								@Notes = @New_Notes,
+								@InsertedNotesID = @NotesID OUTPUT
+	END TRY
+	BEGIN CATCH
+		-- Call procedure to print error information.
+		EXECUTE dbo.uspPrintError;
+
+		-- Roll back any active or uncommittable transactions before
+		-- inserting information in the ErrorLog.
+		IF XACT_STATE() <> 0
+		BEGIN
+			ROLLBACK TRANSACTION;
+		END
+
+		EXECUTE dbo.uspLogError @ErrorLogID = @ErrorLogID OUTPUT;
+		RETURN ERROR_NUMBER()
+	END CATCH;
+END
+GO
 PRINT N'Altering [dbo].[usp_SlChildStatus]...';
 
 
@@ -314,9 +656,14 @@ BEGIN
 	-- interfering with SELECT statements.
 	SET NOCOUNT ON;
 
+	DECLARE @spexecutesqlStr NVARCHAR(3000)
+
+	select @spexecutesqlStr =''
+
+
     -- Insert statements for procedure here
-	SET @TargetType = 'Child'
-		select statusName from TargetStatus where TargetType = @TargetType
+	SELECT [TS].[StatusName],[TS].[StatusID] from [TargetStatus] AS [TS]
+	where 1 = 1 AND TargetType in ('Person','All')
 
 END
 GO
@@ -352,6 +699,59 @@ BEGIN
 
 	EXEC [sp_executesql] @spexecutesqlStr
 		, N'@SampleTarget varchar(50)', @SampleTarget = @Sample_Target
+END
+GO
+PRINT N'Creating [dbo].[usp_InsertPersontoPerson]...';
+
+
+GO
+
+
+
+-- =============================================
+-- Author:		William Thier
+-- Create date: 20150323
+-- Description:	Stored Procedure to insert 
+--              new PersontoPerson records how 
+--              they are related
+-- =============================================
+
+CREATE PROCEDURE [dbo].[usp_InsertPersontoPerson]   -- usp_InsertPersontoPerson
+	-- Add the parameters for the stored procedure here
+	@Person1ID int = NULL,
+	@Person2ID smallint = NULL,
+	@RelationshipType int = NULL,
+	@isGuardian bit = NULL,
+	@isPrimaryContact bit = NULL
+	--@EndDate date = NULL,
+	--@GroupID varchar(20) = NULL
+
+AS
+BEGIN
+	-- SET NOCOUNT ON added to prevent extra result sets from
+	-- interfering with SELECT statements.
+	SET NOCOUNT ON;
+
+	DECLARE @ErrorLogID int;
+    -- Insert statements for procedure here
+	BEGIN TRY
+		 INSERT into PersontoPerson( Person1ID, Person2ID, RelationshipTypeID, isGuardian, isPrimaryContact ) 
+					 Values ( @Person1ID, @Person2ID, @RelationShipType, @isGuardian, @isPrimaryContact )
+	END TRY
+	BEGIN CATCH
+		-- Call procedure to print error information.
+		EXECUTE dbo.uspPrintError;
+
+		-- Roll back any active or uncommittable transactions before
+		-- inserting information in the ErrorLog.
+		IF XACT_STATE() <> 0
+		BEGIN
+			ROLLBACK TRANSACTION;
+		END
+
+		EXECUTE dbo.uspLogError @ErrorLogID = @ErrorLogID OUTPUT;
+		RETURN ERROR_NUMBER()
+	END CATCH;
 END
 GO
 PRINT N'Creating [dbo].[usp_InsertTravelNotes]...';
@@ -502,6 +902,56 @@ BEGIN
 		END CATCH;
 END
 GO
+PRINT N'Creating [dbo].[usp_SlRelationShipTypes]...';
+
+
+GO
+
+
+-- =============================================
+-- Author:		Liam Thier
+-- Create date: 20150110
+-- Description:	User defined stored procedure to
+--              select all relationship types and IDs
+-- =============================================
+CREATE PROCEDURE [dbo].[usp_SlRelationShipTypes]
+	-- Add the parameters for the stored procedure her
+AS
+BEGIN
+	-- SET NOCOUNT ON added to prevent extra result sets from
+	-- interfering with SELECT statements.
+	SET NOCOUNT ON;
+
+	DECLARE @spexecutesqlStr	NVARCHAR (4000),
+        @Recompile  BIT = 1, @ErrorLogID int;
+
+    -- Insert statements for procedure here
+	select @spexecutesqlStr ='SELECT [RT].[RelationshipTypeID], [RT].[RelationshipTypeName]
+	from [RelationshipType] AS [RT]
+	where 1 = 1'
+	
+	-- Return all families and associated properties if nothing was passed in
+	SET @Recompile = 0
+
+	-- order by last name
+	SELECT @spexecutesqlStr = @spexecutesqlStr + N' order by [RT].[RelationshipTypeName]'
+		
+	IF @Recompile = 1
+		SELECT @spexecutesqlStr = @spexecutesqlStr + N' OPTION(RECOMPILE)';
+
+	BEGIN TRY 
+		EXEC [sp_executesql] @spexecutesqlStr;
+	END TRY
+	BEGIN CATCH
+		-- Call procedure to print error information.
+		EXECUTE dbo.uspPrintError;
+
+		-- Add error information to errorlog
+		EXECUTE dbo.uspLogError @ErrorLogID = @ErrorLogID OUTPUT;
+		RETURN ERROR_NUMBER()
+	END CATCH;
+END
+GO
 PRINT N'Creating [dbo].[usp_SlStatus]...';
 
 
@@ -603,6 +1053,155 @@ BEGIN
 	END CATCH; 
 END
 GO
+PRINT N'Altering [dbo].[usp_InsertNewClientWebScreen]...';
+
+
+GO
+-- =============================================
+-- Author:		Liam Thier
+-- Create date: 20141115
+-- Description:	stored procedure to insert data from the Add a new client web page
+-- =============================================
+ALTER PROCEDURE [dbo].[usp_InsertNewClientWebScreen]
+	-- Add the parameters for the stored procedure here
+	@Family_ID int = NULL, 
+	@First_Name varchar(50) = NULL,
+	@Middle_Name varchar(50) = NULL,
+	@Last_Name varchar(50) = NULL,
+	@Birth_Date date = NULL,
+	@Gender_ char(1) = NULL,
+	@Language_ID tinyint = NULL,
+	-- @Child_ID varchar(50) = 'Leadville',
+	@Ethnicity_ID varchar(2) = NULL, -- store as binary/bitmap
+	@Moved_ bit = NULL,
+	@Travel bit = NULL, --ForeignTravel
+	@Travel_Notes varchar(3000) = NULL,
+	@Out_of_Site bit = NULL, 
+	@Hobby_ID smallint = NULL,
+	@Hobby_Notes varchar(3000) = NULL,
+	@Child_Notes varchar(3000) = NULL,
+	@Release_Notes varchar(3000) = NULL,
+	@is_Smoker bit = NULL,
+	@Occupation_ID smallint = NULL,
+	@Occupation_Start_Date date = NULL,
+	@OverrideDuplicatePerson bit = 0,
+	@ClientID int OUTPUT
+
+AS
+BEGIN
+	-- SET NOCOUNT ON added to prevent extra result sets from
+	-- interfering with SELECT statements.
+	SET NOCOUNT ON;
+
+	BEGIN
+		DECLARE @ErrorLogID int,
+				@PersontoFamily_return_value int,
+				@PersontoLanguage_return_value int,
+				@PersontoHobby_return_value int,
+				@PersontoOccupation_return_value int,
+				@PersontoEthnicity_return_value int;
+	
+		-- If no family ID was passed in exit
+		IF (@Family_ID IS NULL)
+		BEGIN
+			RAISERROR ('Family name must be supplied', 11, -1);
+			RETURN;
+		END;
+
+		-- If the family doesn't exist, return an error
+		IF ((select FamilyID from family where FamilyID = @Family_ID) is NULL)
+		BEGIN
+			DECLARE @ErrorString VARCHAR(3000);
+			SET @ErrorString = 'Unable to associate non-existent family. Family does not exist.'
+			RAISERROR (@ErrorString, 11, -1);
+			RETURN;
+		END
+	
+		if (@Last_Name is null)
+		BEGIN
+			select @Last_Name = Lastname from Family where FamilyID = @Family_ID
+		END
+
+		BEGIN TRY  -- insert new person
+			EXEC	[dbo].[usp_InsertPerson]
+					@FirstName = @First_Name,
+					@MiddleName = @Middle_Name,
+					@LastName = @Last_Name,
+					@BirthDate = @Birth_Date,
+					@Gender = @Gender_,
+					-- @Ethnicity,
+					@Moved = @Moved_,
+					@ForeignTravel = @Travel,
+					-- @TravelNotes,
+					@OutofSite = @Out_of_Site,
+					-- @HobbyNotes,
+					@New_Notes = @Child_Notes,
+					@isSmoker = @is_Smoker,
+					@OverrideDuplicate = @OverrideDuplicatePerson,
+					@PID = @CLientID OUTPUT;
+
+			-- Associate person to family
+			if (@Family_ID is not NULL)
+			EXEC	@PersontoFamily_return_value = usp_InsertPersontoFamily
+					@PersonID = @ClientID, @FamilyID = @Family_ID, @OUTPUT = @PersontoFamily_return_value OUTPUT;
+
+			-- Associate person to language
+			if (@Language_ID is not NULL)
+			EXEC 	@PersontoLanguage_return_value = usp_InsertPersontoLanguage
+					@LanguageID = @Language_ID, @PersonID = @ClientID, @isPrimaryLanguage = 1;
+
+			-- associate person to Hobby
+			if (@Hobby_ID is not NULL)
+			EXEC	@PersontoHobby_return_value = usp_InsertPersontoHobby
+					@HobbyID = @Hobby_ID, @PersonID = @ClientID;
+
+			-- associate person to occupation
+			if (@Occupation_ID is not NULL)
+			EXEC	@PersontoOccupation_return_value = [dbo].[usp_InsertPersontoOccupation]
+					@PersonID = @ClientID,
+					@OccupationID = @Occupation_ID
+		END TRY
+		BEGIN CATCH -- insert person
+			-- Call procedure to print error information.
+			EXECUTE dbo.uspPrintError;
+
+			-- Roll back any active or uncommittable transactions before
+			-- inserting information in the ErrorLog.
+			IF XACT_STATE() <> 0
+			BEGIN
+				ROLLBACK TRANSACTION;
+			END
+
+			EXECUTE dbo.uspLogError @ErrorLogID = @ErrorLogID OUTPUT;
+			RETURN ERROR_NUMBER()
+		END CATCH; -- insert new person
+	END
+
+	IF (@Family_ID is not NULL AND @PersontoFamily_return_value <> 0) 
+	BEGIN
+		RAISERROR ('Error associating person to family', 11, -1);
+		RETURN;
+	END
+	
+	IF (@Hobby_ID is not NULL AND @PersontoHobby_return_value <> 0)
+	BEGIN
+		RAISERROR ('Error associating person to Hobby', 11, -1);
+		RETURN;
+	END
+	
+	IF (@Language_ID is not NULL AND @PersontoLanguage_return_value <> 0) 
+	BEGIN
+		RAISERROR ('Error associating person to language', 11, -1);
+		RETURN;
+	END
+	
+	IF (@Occupation_ID is not NULL and @PersontoOccupation_return_value <> 0)
+	BEGIN
+		RAISERROR ('Error associating person to occupation', 11, -1);
+		RETURN;
+	END
+END
+GO
 PRINT N'Altering [dbo].[usp_InsertNewFamilyWebScreen]...';
 
 
@@ -641,6 +1240,8 @@ ALTER PROCEDURE [dbo].[usp_InsertNewFamilyWebScreen]
 	@Travel_Notes varchar(3000) = NULL,
 	@Travel_Start_Date varchar(3000) = NULL,
 	@Travel_End_Date varchar(3000) = NULL,
+	@OverrideDuplicateProperty bit = 0,
+	@OverrideDuplicateFamilyPropertyAssociation bit = 0,
 	@DEBUG BIT = 0,
 	@FamilyID int OUTPUT
 
@@ -661,7 +1262,8 @@ BEGIN
 	END;
 
 	BEGIN
-		DECLARE @PhoneTypeID tinyint, 
+		DECLARE @return_value int,
+				@PhoneTypeID tinyint, 
 				@Family_return_value int,
 				@PropID int, @LID tinyint,
 				@PhoneNumberID_OUTPUT int,
@@ -675,7 +1277,8 @@ BEGIN
 			-- Insert the property address if it doesn't already exist
 			-- NEED TO RETRIEVE PROPERTY ID IF IT ALREADY EXISTS
 			SELECT @PropID = PropertyID from Property where
-					AddressLine1 = @Address_Line1 and City = @CityName and [State] = @StateAbbr and Zipcode = @ZipCode
+					replace(AddressLine1,'.','') = replace(@Address_Line1,'.','') and City = @CityName 
+					and [State] = @StateAbbr and Zipcode = @ZipCode
 
 			--if (@is_Owner_Occupied = 1) 
 			--	select @Owner_id = IDENT_CURRENT('Family')+1
@@ -694,15 +1297,19 @@ BEGIN
 						@isResidential = @is_Residential,
 						@hasPeelingChippingPaint = @has_Peeling_Chipping_Paint,
 						@isRental = @is_Rental,
-
+						@OverrideDuplicate = @OverrideDuplicateProperty,
 						@PropertyID = @PropID OUTPUT;
 					END -- enter property
 			-- Check if Family is already associated with property, if so, skip insert and return warning:
 			if ((select count(PrimarypropertyID) from Family where LastName = @FamilyLastName and PrimaryPropertyID = @PropID) > 0)
 			BEGIN
-				-- update address in the future??
-				RAISERROR ('Family is already associated with that Property', 11, -1);
-				RETURN;
+				if ( @OverrideDuplicateFamilyPropertyAssociation = 1)
+				BEGIN
+					-- update address in the future??
+					RAISERROR ('Family is already associated with that Property', 11, -1);
+					RETURN;
+				END
+-- 				SET @return_value =  
 			END
 			ELSE
 			BEGIN
@@ -939,14 +1546,6 @@ EXECUTE sp_refreshsqlmodule N'[dbo].[usp_SLInsertedDataMetaData]';
 
 
 GO
-PRINT N'Refreshing [dbo].[usp_InsertNewBloodLeadTestResultsWebScreen]...';
-
-
-GO
-EXECUTE sp_refreshsqlmodule N'[dbo].[usp_InsertNewBloodLeadTestResultsWebScreen]';
-
-
-GO
 PRINT N'Refreshing [dbo].[usp_InsertHistoricFamily]...';
 
 
@@ -955,27 +1554,11 @@ EXECUTE sp_refreshsqlmodule N'[dbo].[usp_InsertHistoricFamily]';
 
 
 GO
-PRINT N'Refreshing [dbo].[usp_InsertNewClientWebScreen]...';
-
-
-GO
-EXECUTE sp_refreshsqlmodule N'[dbo].[usp_InsertNewClientWebScreen]';
-
-
-GO
 PRINT N'Refreshing [dbo].[usp_SLInsertedDataSimplified]...';
 
 
 GO
 EXECUTE sp_refreshsqlmodule N'[dbo].[usp_SLInsertedDataSimplified]';
-
-
-GO
-PRINT N'Refreshing [dbo].[usp_InsertProperty]...';
-
-
-GO
-EXECUTE sp_refreshsqlmodule N'[dbo].[usp_InsertProperty]';
 
 
 GO

@@ -8,8 +8,7 @@ DECLARE @BaseBackupPath nvarchar(500)
 		, @LogDBBackupFileName nvarchar(500)
 		, @BackupTimeStamp nvarchar(100);
 
- Select @BackupTimeStamp = replace(replace(replace(convert(nvarchar(50), getdate(), 120), ' ',''),':',''),'-','')
-
+Select @BackupTimeStamp = replace(replace(replace(convert(nvarchar(50), getdate(), 120), ' ',''),':',''),'-','')
 
 SET @BaseBackupPath = N'Y:\Backup\WIN-1M8NQQ69OEH\LCCHPDev\' + @BackupTimeStamp + '-';
 SET @FullDBBackupFileName = @BaseBackupPath + N'LCCHPDevPromotetoLCCHPPublic.bak';
