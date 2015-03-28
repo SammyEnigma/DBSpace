@@ -40,6 +40,79 @@ USE [$(DatabaseName)];
 
 
 GO
+PRINT N'Creating [dbo].[usp_upEthnicity]...';
+
+
+GO
+
+
+-- =============================================
+-- Author:		William Thier
+-- Create date: 20150327
+-- Description:	Stored Procedure to update ethnicity records
+-- =============================================
+-- DROP PROCEDURE usp_upEthnicity
+CREATE PROCEDURE [dbo].[usp_upEthnicity] 
+	-- Add the parameters for the stored procedure here
+	@PersonID int = NULL,
+	@New_EthnicityID tinyint = NULL,
+	@Current_EthnicityID tinyint = NULL,
+	@DEBUG BIT = 0,
+	@PersontoEthnicityID int OUTPUT
+AS
+BEGIN
+	-- SET NOCOUNT ON added to prevent extra result sets from
+	-- interfering with SELECT statements.
+	SET NOCOUNT ON;
+
+	DECLARE @ErrorLogID int, @ErrorMessage NVARCHAR(4000), @spupdateEthnicitysqlStr NVARCHAR(4000);
+
+	-- insert statements for procedure here
+	BEGIN TRY
+		-- Check if PersonID is valid, if not return
+		SELECT @Current_EthnicityID = EthnicityID,@PersontoEthnicityID = PersontoEthnicityID from PersontoEthnicity where PersonID = @PersonID
+
+		IF (@Current_EthnicityID IS NULL)
+		BEGIN
+			SELECT @ErrorMessage = 'PersonID: ' + cast(@PersonID as varchar) + ' does not have an ethnicity specified, inserting a new record'
+			
+			EXEC usp_InsertPersontoEthnicity 
+					@PersonID = @PersonID, 
+					@EthnicityID = @New_EthnicityID,
+					@PersontoethnicityID = @PersontoEthnicityID OUTPUT;
+			RETURN;
+		END
+		
+		-- BUILD update statement
+		SELECT @spupdateEthnicitysqlStr = N'update PersontoEthnicity set EthnicityID = @NewEthnicityID 
+					where PersonID = @PersonID AND PersontoEthnicityID = @PersontoEthnicityID'
+		
+		IF (@DEBUG = 1)
+			SELECT @spupdateEthnicitysqlStr, 'New_EthnicityID' = @New_EthnicityID, 'PersonID' = @PersonID
+				, 'PersontoEthnicityID' = @PersontoEthnicityID
+
+		EXEC [sp_executesql] @spupdateEthnicitysqlStr
+				, N'@NewEthnicityID tinyint, @PersonID int, @PersontoEthnicityID int'
+				, @NewEthnicityID = @New_EthnicityID
+				, @PersonID = @PersonID
+				, @PersontoEthnicityID = @PersontoEthnicityID
+	END TRY
+	BEGIN CATCH
+		-- Call procedure to print error information.
+		EXECUTE dbo.uspPrintError;
+
+		-- Roll back any active or uncommittable transactions before
+		-- inserting information in the ErrorLog.
+		IF XACT_STATE() <> 0
+		BEGIN
+			ROLLBACK TRANSACTION;
+		END
+
+		EXECUTE dbo.uspLogError @ErrorLogID = @ErrorLogID OUTPUT;
+		RETURN ERROR_NUMBER()
+	END CATCH;
+END
+GO
 PRINT N'Creating [dbo].[usp_upOccupation]...';
 
 
