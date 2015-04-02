@@ -40,313 +40,81 @@ USE [$(DatabaseName)];
 
 
 GO
-/*
-The column [dbo].[Family].[inandout] is being dropped, data loss could occur.
-*/
-
-IF EXISTS (select top 1 1 from [dbo].[Family])
-    RAISERROR (N'Rows were detected. The schema update is terminating because data loss might occur.', 16, 127) WITH NOWAIT
-
-GO
-PRINT N'Dropping [dbo].[DF_Family_PrimaryLanguageID]...';
+PRINT N'Altering [dbo].[usp_InsertPerson]...';
 
 
 GO
-ALTER TABLE [dbo].[Family] DROP CONSTRAINT [DF_Family_PrimaryLanguageID];
 
-
-GO
-PRINT N'Dropping [dbo].[DF_Family_CreatedDate]...';
-
-
-GO
-ALTER TABLE [dbo].[Family] DROP CONSTRAINT [DF_Family_CreatedDate];
-
-
-GO
-PRINT N'Dropping [dbo].[DF_PersontoEthnicity_CreatedDate]...';
-
-
-GO
-ALTER TABLE [dbo].[PersontoEthnicity] DROP CONSTRAINT [DF_PersontoEthnicity_CreatedDate];
-
-
-GO
-PRINT N'Dropping [dbo].[FK_FamilyNotes_Family]...';
-
-
-GO
-ALTER TABLE [dbo].[FamilyNotes] DROP CONSTRAINT [FK_FamilyNotes_Family];
-
-
-GO
-PRINT N'Dropping [dbo].[FK_TravelNotes_Family]...';
-
-
-GO
-ALTER TABLE [dbo].[TravelNotes] DROP CONSTRAINT [FK_TravelNotes_Family];
-
-
-GO
-PRINT N'Dropping [dbo].[FK_PersontoFamily_Family]...';
-
-
-GO
-ALTER TABLE [dbo].[PersontoFamily] DROP CONSTRAINT [FK_PersontoFamily_Family];
-
-
-GO
-PRINT N'Dropping [dbo].[FK_PersontoEthnicity_Ethnicity]...';
-
-
-GO
-ALTER TABLE [dbo].[PersontoEthnicity] DROP CONSTRAINT [FK_PersontoEthnicity_Ethnicity];
-
-
-GO
-PRINT N'Dropping [dbo].[FK_PersontoEthnicity_Person]...';
-
-
-GO
-ALTER TABLE [dbo].[PersontoEthnicity] DROP CONSTRAINT [FK_PersontoEthnicity_Person];
-
-
-GO
-PRINT N'Starting rebuilding table [dbo].[Family]...';
-
-
-GO
-BEGIN TRANSACTION;
-
-SET TRANSACTION ISOLATION LEVEL SERIALIZABLE;
-
-SET XACT_ABORT ON;
-
-CREATE TABLE [dbo].[tmp_ms_xx_Family] (
-    [FamilyID]           INT          IDENTITY (1, 1) NOT NULL,
-    [Lastname]           VARCHAR (50) NOT NULL,
-    [NumberofSmokers]    TINYINT      NULL,
-    [PrimaryLanguageID]  TINYINT      CONSTRAINT [DF_Family_PrimaryLanguageID] DEFAULT ((1)) NULL,
-    [Pets]               TINYINT      NULL,
-    [Petsinandout]       BIT          NULL,
-    [HistoricFamilyID]   SMALLINT     NULL,
-    [PrimaryPropertyID]  INT          NULL,
-    [ModifiedDate]       DATETIME     NULL,
-    [CreatedDate]        DATETIME     CONSTRAINT [DF_Family_CreatedDate] DEFAULT (getdate()) NULL,
-    [FrequentlyWashPets] BIT          NULL,
-    [ForeignTravel]      BIT          NULL,
-    CONSTRAINT [tmp_ms_xx_constraint_PK_Family] PRIMARY KEY CLUSTERED ([FamilyID] ASC)
-);
-
-IF EXISTS (SELECT TOP 1 1 
-           FROM   [dbo].[Family])
-    BEGIN
-        SET IDENTITY_INSERT [dbo].[tmp_ms_xx_Family] ON;
-        INSERT INTO [dbo].[tmp_ms_xx_Family] ([FamilyID], [Lastname], [NumberofSmokers], [PrimaryLanguageID], [Pets], [HistoricFamilyID], [PrimaryPropertyID], [ModifiedDate], [CreatedDate], [FrequentlyWashPets])
-        SELECT   [FamilyID],
-                 [Lastname],
-                 [NumberofSmokers],
-                 [PrimaryLanguageID],
-                 [Pets],
-                 [HistoricFamilyID],
-                 [PrimaryPropertyID],
-                 [ModifiedDate],
-                 [CreatedDate],
-                 [FrequentlyWashPets]
-        FROM     [dbo].[Family]
-        ORDER BY [FamilyID] ASC;
-        SET IDENTITY_INSERT [dbo].[tmp_ms_xx_Family] OFF;
-    END
-
-DROP TABLE [dbo].[Family];
-
-EXECUTE sp_rename N'[dbo].[tmp_ms_xx_Family]', N'Family';
-
-EXECUTE sp_rename N'[dbo].[tmp_ms_xx_constraint_PK_Family]', N'PK_Family', N'OBJECT';
-
-COMMIT TRANSACTION;
-
-SET TRANSACTION ISOLATION LEVEL READ COMMITTED;
-
-
-GO
-PRINT N'Altering [dbo].[Person]...';
-
-
-GO
-ALTER TABLE [dbo].[Person]
-    ADD [isClient]   BIT CONSTRAINT [DF_Person_isClient] DEFAULT ((1)) NULL,
-        [isNursing]  BIT NULL,
-        [isPregnant] BIT NULL;
-
-
-GO
-PRINT N'Starting rebuilding table [dbo].[PersontoEthnicity]...';
-
-
-GO
-BEGIN TRANSACTION;
-
-SET TRANSACTION ISOLATION LEVEL SERIALIZABLE;
-
-SET XACT_ABORT ON;
-
-CREATE TABLE [dbo].[tmp_ms_xx_PersontoEthnicity] (
-    [PersonID]    INT      NOT NULL,
-    [EthnicityID] TINYINT  NOT NULL,
-    [CreatedDate] DATETIME CONSTRAINT [DF_PersontoEthnicity_CreatedDate] DEFAULT (getdate()) NULL,
-    CONSTRAINT [tmp_ms_xx_constraint_PK_PersontoEthnicity_1] PRIMARY KEY CLUSTERED ([PersonID] ASC, [EthnicityID] ASC)
-);
-
-IF EXISTS (SELECT TOP 1 1 
-           FROM   [dbo].[PersontoEthnicity])
-    BEGIN
-        INSERT INTO [dbo].[tmp_ms_xx_PersontoEthnicity] ([PersonID], [EthnicityID], [CreatedDate])
-        SELECT   [PersonID],
-                 [EthnicityID],
-                 [CreatedDate]
-        FROM     [dbo].[PersontoEthnicity]
-        ORDER BY [PersonID] ASC, [EthnicityID] ASC;
-    END
-
-DROP TABLE [dbo].[PersontoEthnicity];
-
-EXECUTE sp_rename N'[dbo].[tmp_ms_xx_PersontoEthnicity]', N'PersontoEthnicity';
-
-EXECUTE sp_rename N'[dbo].[tmp_ms_xx_constraint_PK_PersontoEthnicity_1]', N'PK_PersontoEthnicity_1', N'OBJECT';
-
-COMMIT TRANSACTION;
-
-SET TRANSACTION ISOLATION LEVEL READ COMMITTED;
-
-
-GO
-PRINT N'Creating [dbo].[FK_FamilyNotes_Family]...';
-
-
-GO
-ALTER TABLE [dbo].[FamilyNotes] WITH NOCHECK
-    ADD CONSTRAINT [FK_FamilyNotes_Family] FOREIGN KEY ([FamilyID]) REFERENCES [dbo].[Family] ([FamilyID]);
-
-
-GO
-PRINT N'Creating [dbo].[FK_TravelNotes_Family]...';
-
-
-GO
-ALTER TABLE [dbo].[TravelNotes] WITH NOCHECK
-    ADD CONSTRAINT [FK_TravelNotes_Family] FOREIGN KEY ([FamilyID]) REFERENCES [dbo].[Family] ([FamilyID]);
-
-
-GO
-PRINT N'Creating [dbo].[FK_PersontoFamily_Family]...';
-
-
-GO
-ALTER TABLE [dbo].[PersontoFamily] WITH NOCHECK
-    ADD CONSTRAINT [FK_PersontoFamily_Family] FOREIGN KEY ([FamilyID]) REFERENCES [dbo].[Family] ([FamilyID]);
-
-
-GO
-PRINT N'Creating [dbo].[FK_PersontoEthnicity_Ethnicity]...';
-
-
-GO
-ALTER TABLE [dbo].[PersontoEthnicity] WITH NOCHECK
-    ADD CONSTRAINT [FK_PersontoEthnicity_Ethnicity] FOREIGN KEY ([EthnicityID]) REFERENCES [dbo].[Ethnicity] ([EthnicityID]);
-
-
-GO
-PRINT N'Creating [dbo].[FK_PersontoEthnicity_Person]...';
-
-
-GO
-ALTER TABLE [dbo].[PersontoEthnicity] WITH NOCHECK
-    ADD CONSTRAINT [FK_PersontoEthnicity_Person] FOREIGN KEY ([PersonID]) REFERENCES [dbo].[Person] ([PersonID]);
-
-
-GO
-PRINT N'Creating [dbo].[trUpdateFamily]...';
-
-
-GO
-create trigger trUpdateFamily on Family AFTER UPDATE
-	as
-	 begin
-	  if @@rowcount = 0
-		return
-	  if not update(ModifiedDate) update Family set ModifiedDate = getdate() where FamilyID in (select FamilyID from inserted)
-
-	end
-GO
-PRINT N'Refreshing [dbo].[vNursingMothers]...';
-
-
-GO
-EXECUTE sp_refreshsqlmodule N'[dbo].[vNursingMothers]';
-
-
-GO
-PRINT N'Altering [dbo].[usp_InsertFamily]...';
-
-
-GO
 
 -- =============================================
 -- Author:		William Thier
--- Create date: 20140205
--- Description:	Stored Procedure to insert new Family information
+-- Create date: 20130506
+-- Description:	Stored Procedure to insert new people records
 -- =============================================
-
-ALTER PROCEDURE [dbo].[usp_InsertFamily]  
+-- DROP PROCEDURE usp_InsertPerson
+ALTER PROCEDURE [dbo].[usp_InsertPerson]   -- usp_InsertPerson "Bonifacic",'James','Marco','19750205','M'
 	-- Add the parameters for the stored procedure here
-	@LastName varchar(50) = NULL,
-	@NumberofSmokers tinyint = 0,
-	@PrimaryLanguageID tinyint = 1,
-	@Notes varchar(3000) = NULL,
+	@FirstName varchar(50) = NULL,
+	@MiddleName varchar(50) = NULL,
+	@LastName varchar(50) = NULL, 
+	@BirthDate date = NULL,
+	@Gender char(1) = NULL,
+	@StatusID smallint = NULL,
 	@ForeignTravel bit = NULL,
-	@New_Travel_Notes varchar(3000) = NULL,
-	@Travel_Start_Date date = NULL,
-	@Travel_End_Date date = NULL,
-	@Pets tinyint = NULL,
-	@Petsinandout bit = NULL,
-	@PrimaryPropertyID int = NULL,
-	@FrequentlyWashPets bit = NULL,
-	@FID int OUTPUT
-
+	@OutofSite bit = NULL,
+	@EatsForeignFood bit = NULL,
+	@PatientID smallint = NULL,
+	@RetestDate datetime = NULL,
+	@Moved bit = NULL,
+	@MovedDate date = NULL,
+	@isClosed bit = 0,
+	@isResolved bit = 0,
+	@New_Notes varchar(3000) = NULL,
+	@GuardianID int = NULL,
+	@isSmoker bit = NULL,
+	@isClient bit = 1,
+	@isNursing bit = 0,
+	@isPregnant bit = 0,
+	@OverrideDuplicate bit = 0,
+	@PID int OUTPUT 
 AS
 BEGIN
 	-- SET NOCOUNT ON added to prevent extra result sets from
 	-- interfering with SELECT statements.
 	SET NOCOUNT ON;
 
-    -- Insert statements for procedure here
-	DECLARE @ErrorLogID int, @FamilyNotesReturnValue int, @InsertedFamilyNotesID int
-			, @TravelNotesReturnValue int, @InsertedTravelNotesID int;
+	DECLARE @ErrorLogID int, @NotesID int;
 
-	BEGIN TRY -- insert Family
-		BEGIN TRANSACTION InsertFamilyTransaction
-			INSERT into Family ( LastName,  NumberofSmokers,  PrimaryLanguageID, Pets, Petsinandout
-						, PrimaryPropertyID, FrequentlyWashPets, ForeignTravel) 
-						Values (@LastName, @NumberofSmokers, @PrimaryLanguageID, @Pets, @Petsinandout
-						, @PrimaryPropertyID, @FrequentlyWashPets, @ForeignTravel)
-			SET @FID = SCOPE_IDENTITY();  -- uncomment to return primary key of inserted values
-
-			IF (@Notes IS NOT NULL)
-				EXEC	@FamilyNotesReturnValue = [dbo].[usp_InsertFamilyNotes]
-													@Family_ID = @FID,
-													@Notes = @Notes,
-													@InsertedNotesID = @InsertedFamilyNotesID OUTPUT
+	-- set default retest date if none specified
+	IF @RetestDate is null
+		SET @RetestDate = DATEADD(yy,1,GetDate());
 	
-			IF (@New_Travel_Notes IS NOT NULL)
-				EXEC	@TravelNotesReturnValue = [dbo].[usp_InsertTravelNotes]
-						@Family_ID = @FID,
-						@Travel_Notes = @New_Travel_Notes,
-						@Start_Date = @Travel_Start_Date,
-						@End_Date = @Travel_End_Date,
-						@InsertedNotesID = @InsertedTravelNotesID OUTPUT
+	Select @PID = PersonID from Person where Lastname = @LastName and FirstName = @FirstName AND BirthDate = @BirthDate;
+	IF (@PID IS NOT NULL AND @OverrideDuplicate = 0)
+	BEGIN
+		DECLARE @ErrorString VARCHAR(3000);
+		SET @ErrorString ='Person appears to be a duplicate of personID: ' + cast(@PID as varchar(256))
+		RAISERROR (@ErrorString, 11, -1);
+		RETURN;
+	END	
 
-		COMMIT TRANSACTION InsertFamilyTransaction
+    -- Insert statements for procedure here
+	BEGIN TRY
+		 INSERT into person ( LastName,  FirstName,  MiddleName,  BirthDate,  Gender,  StatusID, 
+							  ForeignTravel,  OutofSite,  EatsForeignFood,  PatientID,  RetestDate, 
+							  Moved,  MovedDate,  isClosed,  isResolved,  GuardianID,  isSmoker, 
+							  isClient, isNursing, isPregnant) 
+					 Values (@LastName, @FirstName, @MiddleName, @BirthDate, @Gender, @StatusID,
+							 @ForeignTravel, @OutofSite, @EatsForeignFood, @PatientID, @RetestDate,
+							 @Moved, @MovedDate, @isClosed, @isResolved,  @GuardianID, @isSmoker, 
+							 @isClient, @isNursing, @isPregnant);
+		SET @PID = SCOPE_IDENTITY();
+
+		IF (@New_Notes IS NOT NULL)
+			EXEC	[dbo].[usp_InsertPersonNotes]
+								@Person_ID = @PID,
+								@Notes = @New_Notes,
+								@InsertedNotesID = @NotesID OUTPUT
 	END TRY
 	BEGIN CATCH
 		-- Call procedure to print error information.
@@ -360,174 +128,68 @@ BEGIN
 		END
 
 		EXECUTE dbo.uspLogError @ErrorLogID = @ErrorLogID OUTPUT;
-		RETURN ERROR_NUMBER();
-	END CATCH; 
+		RETURN ERROR_NUMBER()
+	END CATCH;
 END
 GO
-PRINT N'Altering [dbo].[usp_InsertNewFamilyWebScreen]...';
+PRINT N'Altering [dbo].[usp_InsertPersontoPerson]...';
 
 
 GO
 
 
+
 -- =============================================
--- Author:		Liam Thier
--- Create date: 20141115
--- Description:	stored procedure to insert data from the Add a new family web page
+-- Author:		William Thier
+-- Create date: 20150323
+-- Description:	Stored Procedure to insert 
+--              new PersontoPerson records how 
+--              they are related
 -- =============================================
--- 20150102	Fixed bug with family/property association checking
-ALTER PROCEDURE [dbo].[usp_InsertNewFamilyWebScreen]
+
+ALTER PROCEDURE [dbo].[usp_InsertPersontoPerson]   -- usp_InsertPersontoPerson
 	-- Add the parameters for the stored procedure here
-	@FamilyLastName varchar(50) = NULL, 
-	@Address_Line1 varchar(100) = NULL,
-	@Address_Line2 varchar(100) = NULL,
-	@CityName varchar(50) = NULL,
-	@StateAbbr char(2) = NULL,
-	@ZipCode varchar(10) = NULL,
-	@Year_Built date = NULL,
-	@Owner_id int = NULL,
-	@is_Owner_Occupied bit = NULL,
-	@is_Residential bit = NULL,
-	@has_Peeling_Chipping_Paint bit = NULL,
-	@is_Rental bit = NULL,
-	@HomePhone bigint = NULL,
-	@WorkPhone bigint = NULL,
-	@Language tinyint = NULL, 
-	@NumSmokers tinyint = NULL,
-	@Pets tinyint = NULL,
-	@Frequently_Wash_Pets bit = NULL,
-	@Petsinandout bit = NULL,
-	@FamilyNotes varchar(3000) = NULL,
-	@PropertyNotes varchar(3000) = NULL,
-	@Travel bit = NULL,
-	@Travel_Notes varchar(3000) = NULL,
-	@Travel_Start_Date varchar(3000) = NULL,
-	@Travel_End_Date varchar(3000) = NULL,
-	@OverrideDuplicateProperty bit = 0,
-	@OverrideDuplicateFamilyPropertyAssociation bit = 0,
-	@DEBUG BIT = 0,
-	@FamilyID int OUTPUT
+	@Person1ID int = NULL,
+	@Person2ID smallint = NULL,
+	@RelationshipType int = NULL,
+	@isGuardian bit = NULL, -- True if P1 is guardian of P2
+	@isPrimaryContact bit = NULL
+	--@EndDate date = NULL,
+	--@GroupID varchar(20) = NULL
 
 AS
 BEGIN
 	-- SET NOCOUNT ON added to prevent extra result sets from
 	-- interfering with SELECT statements.
 	SET NOCOUNT ON;
-	
-	IF (@FamilyLastName IS NULL
-		AND @Address_Line1 IS NULL
-		AND @Address_Line2 IS NULL
-		AND @HomePhone IS NULL
-		AND @WorkPhone IS NULL)
-	BEGIN
-		RAISERROR ('You must supply at least one of the following: Family name, StreetNumber, Street Name, Street Suffix, Apartment number, Home phone, or Work phone', 11, -1);
-		RETURN;
-	END;
 
-	BEGIN
-		DECLARE @return_value int,
-				@PhoneTypeID tinyint, 
-				@Family_return_value int,
-				@PropID int, @LID tinyint,
-				@PhoneNumberID_OUTPUT int,
-				@Homephone_return_value int,
-				@Workphone_return_value int,
-				@NewFamilyNotesID int,
-				@TravelNotesReturnValue int,
-				@ErrorLogID int;
+	DECLARE @ErrorLogID int;
+    -- Insert statements for procedure here
+	BEGIN TRY
+		 INSERT into PersontoPerson( Person1ID, Person2ID, RelationshipTypeID, isGuardian, isPrimaryContact ) 
+					 Values ( @Person1ID, @Person2ID, @RelationShipType, @isGuardian, @isPrimaryContact )
+		 
+		 -- Switch isGuardian information to update reciprocal relationship
+		 --IF (@isGuardian = 1) SET @isGuardian = 0;
+		 --ELSE SET @isGuardian = 1;
+		 
+		 --INSERT into PersontoPerson (Person1ID, Person2ID, isGuardian) values (@Person2ID, @Person1ID, @isGuardian)
 
-		BEGIN TRY
-			-- Insert the property address if it doesn't already exist
-			-- NEED TO RETRIEVE PROPERTY ID IF IT ALREADY EXISTS
-			SELECT @PropID = PropertyID from Property where
-					replace(AddressLine1,'.','') = replace(@Address_Line1,'.','') and City = @CityName 
-					and [State] = @StateAbbr and Zipcode = @ZipCode
+	END TRY
+	BEGIN CATCH
+		-- Call procedure to print error information.
+		EXECUTE dbo.uspPrintError;
 
-			--if (@is_Owner_Occupied = 1) 
-			--	select @Owner_id = IDENT_CURRENT('Family')+1
+		-- Roll back any active or uncommittable transactions before
+		-- inserting information in the ErrorLog.
+		IF XACT_STATE() <> 0
+		BEGIN
+			ROLLBACK TRANSACTION;
+		END
 
-			if ( @PropID is NULL)
-			BEGIN -- enter property
-				EXEC	[dbo].[usp_InsertProperty] 
-						@AddressLine1 = @Address_Line1,
-						@AddressLine2 = @Address_Line2,
-						@City = @CityName,
-						@State = @StateAbbr,
-						@Zipcode = @ZipCode,
-						@New_PropertyNotes = @PropertyNotes,
-						@YearBuilt = @Year_Built,
-						@Ownerid = @Owner_id,
-						@isOwnerOccuppied = @is_Owner_Occupied,
-						@isResidential = @is_Residential,
-						@hasPeelingChippingPaint = @has_Peeling_Chipping_Paint,
-						@isRental = @is_Rental,
-						@OverrideDuplicate = @OverrideDuplicateProperty,
-						@PropertyID = @PropID OUTPUT;
-					END -- enter property
-			-- Check if Family is already associated with property, if so, skip insert and return warning:
-			if ((select count(PrimarypropertyID) from Family where LastName = @FamilyLastName and PrimaryPropertyID = @PropID) > 0)
-			BEGIN
-				if ( @OverrideDuplicateFamilyPropertyAssociation = 1)
-				BEGIN
-					-- update address in the future??
-					RAISERROR ('Family is already associated with that Property', 11, -1);
-					RETURN;
-				END
--- 				SET @return_value =  
-			END
-			ELSE
-			BEGIN
-				EXEC	[dbo].[usp_InsertFamily]
-						@LastName = @FamilyLastName,
-						@NumberofSmokers = @NumSmokers,
-						@PrimaryLanguageID = @Language,
-						@Notes = @FamilyNotes,
-						@ForeignTravel = @Travel,
-						@New_Travel_Notes = @Travel_Notes,
-						@Travel_Start_Date = @Travel_Start_Date,
-						@Travel_End_Date = @Travel_End_Date,
-						@Pets = @Pets,
-						@Petsinandout = @Petsinandout,
-						@FrequentlyWashPets = @Frequently_Wash_Pets,
-						@PrimaryPropertyID = @PropID,
-						@FID = @FamilyID OUTPUT;
-			END
-
-			if (@HomePhone is not NULL) 
-			BEGIN  -- insert Home Phone
-				SELECT @PhoneTypeID = PhoneNumberTypeID from PhoneNumberType where PhoneNumberTypeName = 'Home Phone';
-				
-				EXEC	@Homephone_return_value = [dbo].[usp_InsertPhoneNumber]
-						@PhoneNumber = @HomePhone,
-						@PhoneNumberTypeID = @PhoneTypeID,
-						@PhoneNumberID_OUTPUT = @PhoneNumberID_OUTPUT OUTPUT
-			END  -- insert Home Phone
-
-			if (@WorkPhone is not NULL) 
-			BEGIN  -- insert Work Phone
-				SELECT @PhoneTypeID = PhoneNumberTypeID from PhoneNumberType where PhoneNumberTypeName = 'Work Phone';
-
-				EXEC	@Workphone_return_value = [dbo].[usp_InsertPhoneNumber]
-						@PhoneNumber = @HomePhone,
-						@PhoneNumberTypeID = @PhoneTypeID,
-						@PhoneNumberID_OUTPUT = @PhoneNumberID_OUTPUT OUTPUT
-			END  -- insert Work Phone
-		END TRY
-		BEGIN CATCH
-			-- Call procedure to print error information.
-			EXECUTE dbo.uspPrintError;
-
-			-- Roll back any active or uncommittable transactions before
-			-- inserting information in the ErrorLog.
-			IF XACT_STATE() <> 0
-			BEGIN
-				ROLLBACK TRANSACTION;
-			END
-
-			EXECUTE dbo.uspLogError @ErrorLogID = @ErrorLogID OUTPUT;
-			RETURN ERROR_NUMBER()
-		END CATCH; 
-	END
+		EXECUTE dbo.uspLogError @ErrorLogID = @ErrorLogID OUTPUT;
+		RETURN ERROR_NUMBER()
+	END CATCH;
 END
 GO
 PRINT N'Altering [dbo].[usp_SLInsertedDataSimplified]...';
@@ -576,7 +238,7 @@ BEGIN
 		--, [L].[LanguageName]
 		, [F].[NumberofSmokers]
 		, [F].[Pets]
-		, [F].[inandout]
+		, [F].[Petsinandout]
 		, [FN].[Notes]
 
 	FROM [Person] AS [P]
@@ -718,98 +380,6 @@ BEGIN
 		EXECUTE dbo.uspLogError @ErrorLogID = @ErrorLogID OUTPUT;
 		RETURN ERROR_NUMBER()
 	END CATCH; 
-END
-GO
-PRINT N'Altering [dbo].[usp_InsertPerson]...';
-
-
-GO
-
-
--- =============================================
--- Author:		William Thier
--- Create date: 20130506
--- Description:	Stored Procedure to insert new people records
--- =============================================
--- DROP PROCEDURE usp_InsertPerson
-ALTER PROCEDURE [dbo].[usp_InsertPerson]   -- usp_InsertPerson "Bonifacic",'James','Marco','19750205','M'
-	-- Add the parameters for the stored procedure here
-	@FirstName varchar(50) = NULL,
-	@MiddleName varchar(50) = NULL,
-	@LastName varchar(50) = NULL, 
-	@BirthDate date = NULL,
-	@Gender char(1) = NULL,
-	@StatusID smallint = NULL,
-	@ForeignTravel bit = NULL,
-	@OutofSite bit = NULL,
-	@EatsForeignFood bit = NULL,
-	@PatientID smallint = NULL,
-	@RetestDate datetime = NULL,
-	@Moved bit = NULL,
-	@MovedDate date = NULL,
-	@isClosed bit = 0,
-	@isResolved bit = 0,
-	@New_Notes varchar(3000) = NULL,
-	@GuardianID int = NULL,
-	@isSmoker bit = NULL,
-	@isClient bit = 1,
-	@isNursing bit = 0,
-	@isPregnant bit = 0,
-	@OverrideDuplicate bit = 0,
-	@PID int OUTPUT 
-AS
-BEGIN
-	-- SET NOCOUNT ON added to prevent extra result sets from
-	-- interfering with SELECT statements.
-	SET NOCOUNT ON;
-
-	DECLARE @ErrorLogID int, @NotesID int;
-
-	-- set default retest date if none specified
-	IF @RetestDate is null
-		SET @RetestDate = DATEADD(yy,1,GetDate());
-	
-	Select @PID = PersonID from Person where Lastname = @LastName and FirstName = @FirstName AND BirthDate = @BirthDate;
-	IF (@PID IS NOT NULL AND @OverrideDuplicate = 0)
-	BEGIN
-		DECLARE @ErrorString VARCHAR(3000);
-		SET @ErrorString ='Person appears to be a duplicate of personID: ' + cast(@PID as varchar(256))
-		RAISERROR (@ErrorString, 11, -1);
-		RETURN;
-	END	
-
-    -- Insert statements for procedure here
-	BEGIN TRY
-		 INSERT into person ( LastName,  FirstName,  MiddleName,  BirthDate,  Gender,  StatusID, 
-							  ForeignTravel,  OutofSite,  EatsForeignFood,  PatientID,  RetestDate, 
-							  Moved,  MovedDate,  isClosed,  isResolved,  GuardianID,  isSmoker, 
-							  isClient, isNursing, isPregnant) 
-					 Values (@LastName, @FirstName, @MiddleName, @BirthDate, @Gender, @StatusID,
-							 @ForeignTravel, @OutofSite, @EatsForeignFood, @PatientID, @RetestDate,
-							 @Moved, @MovedDate, @isClosed, @isResolved,  @GuardianID, @isSmoker, 
-							 @isClient, @isNursing, @isPregnant);
-		SET @PID = SCOPE_IDENTITY();
-
-		IF (@New_Notes IS NOT NULL)
-			EXEC	[dbo].[usp_InsertPersonNotes]
-								@Person_ID = @PID,
-								@Notes = @New_Notes,
-								@InsertedNotesID = @NotesID OUTPUT
-	END TRY
-	BEGIN CATCH
-		-- Call procedure to print error information.
-		EXECUTE dbo.uspPrintError;
-
-		-- Roll back any active or uncommittable transactions before
-		-- inserting information in the ErrorLog.
-		IF XACT_STATE() <> 0
-		BEGIN
-			ROLLBACK TRANSACTION;
-		END
-
-		EXECUTE dbo.uspLogError @ErrorLogID = @ErrorLogID OUTPUT;
-		RETURN ERROR_NUMBER()
-	END CATCH;
 END
 GO
 PRINT N'Altering [dbo].[usp_upPerson]...';
@@ -976,66 +546,6 @@ BEGIN
 								@Person_ID = @Person_ID,
 								@Notes = @New_Notes,
 								@InsertedNotesID = @NotesID OUTPUT
-	END TRY
-	BEGIN CATCH
-		-- Call procedure to print error information.
-		EXECUTE dbo.uspPrintError;
-
-		-- Roll back any active or uncommittable transactions before
-		-- inserting information in the ErrorLog.
-		IF XACT_STATE() <> 0
-		BEGIN
-			ROLLBACK TRANSACTION;
-		END
-
-		EXECUTE dbo.uspLogError @ErrorLogID = @ErrorLogID OUTPUT;
-		RETURN ERROR_NUMBER()
-	END CATCH;
-END
-GO
-PRINT N'Altering [dbo].[usp_InsertPersontoPerson]...';
-
-
-GO
-
-
-
--- =============================================
--- Author:		William Thier
--- Create date: 20150323
--- Description:	Stored Procedure to insert 
---              new PersontoPerson records how 
---              they are related
--- =============================================
-
-ALTER PROCEDURE [dbo].[usp_InsertPersontoPerson]   -- usp_InsertPersontoPerson
-	-- Add the parameters for the stored procedure here
-	@Person1ID int = NULL,
-	@Person2ID smallint = NULL,
-	@RelationshipType int = NULL,
-	@isGuardian bit = NULL, -- True if P1 is guardian of P2
-	@isPrimaryContact bit = NULL
-	--@EndDate date = NULL,
-	--@GroupID varchar(20) = NULL
-
-AS
-BEGIN
-	-- SET NOCOUNT ON added to prevent extra result sets from
-	-- interfering with SELECT statements.
-	SET NOCOUNT ON;
-
-	DECLARE @ErrorLogID int;
-    -- Insert statements for procedure here
-	BEGIN TRY
-		 INSERT into PersontoPerson( Person1ID, Person2ID, RelationshipTypeID, isGuardian, isPrimaryContact ) 
-					 Values ( @Person1ID, @Person2ID, @RelationShipType, @isGuardian, @isPrimaryContact )
-		 
-		 -- Switch isGuardian information to update reciprocal relationship
-		 --IF (@isGuardian = 1) SET @isGuardian = 0;
-		 --ELSE SET @isGuardian = 1;
-		 
-		 --INSERT into PersontoPerson (Person1ID, Person2ID, isGuardian) values (@Person2ID, @Person1ID, @isGuardian)
-
 	END TRY
 	BEGIN CATCH
 		-- Call procedure to print error information.
@@ -2006,46 +1516,6 @@ BEGIN
 	END
 END
 GO
-PRINT N'Creating [dbo].[Family].[MS_Description]...';
-
-
-GO
-EXECUTE sp_addextendedproperty @name = N'MS_Description', @value = N'collection of families', @level0type = N'SCHEMA', @level0name = N'dbo', @level1type = N'TABLE', @level1name = N'Family';
-
-
-GO
-PRINT N'Creating [dbo].[Family].[FamilyID].[MS_Description]...';
-
-
-GO
-EXECUTE sp_addextendedproperty @name = N'MS_Description', @value = N'unique identifier for the family object', @level0type = N'SCHEMA', @level0name = N'dbo', @level1type = N'TABLE', @level1name = N'Family', @level2type = N'COLUMN', @level2name = N'FamilyID';
-
-
-GO
-PRINT N'Creating [dbo].[Family].[Lastname].[MS_Description]...';
-
-
-GO
-EXECUTE sp_addextendedproperty @name = N'MS_Description', @value = N'family name', @level0type = N'SCHEMA', @level0name = N'dbo', @level1type = N'TABLE', @level1name = N'Family', @level2type = N'COLUMN', @level2name = N'Lastname';
-
-
-GO
-PRINT N'Creating [dbo].[Family].[NumberofSmokers].[MS_Description]...';
-
-
-GO
-EXECUTE sp_addextendedproperty @name = N'MS_Description', @value = N'number of smokers in the family', @level0type = N'SCHEMA', @level0name = N'dbo', @level1type = N'TABLE', @level1name = N'Family', @level2type = N'COLUMN', @level2name = N'NumberofSmokers';
-
-
-GO
-PRINT N'Creating [dbo].[Family].[PrimaryLanguageID].[MS_Description]...';
-
-
-GO
-EXECUTE sp_addextendedproperty @name = N'MS_Description', @value = N'id of the families primary language; default = 1 (English)', @level0type = N'SCHEMA', @level0name = N'dbo', @level1type = N'TABLE', @level1name = N'Family', @level2type = N'COLUMN', @level2name = N'PrimaryLanguageID';
-
-
-GO
 PRINT N'Creating [dbo].[Family].[ForeignTravel].[MS_Description]...';
 
 
@@ -2086,95 +1556,11 @@ EXECUTE sp_addextendedproperty @name = N'MS_Description', @value = N'relationshi
 
 
 GO
-PRINT N'Refreshing [dbo].[usp_InsertHistoricFamily]...';
-
-
-GO
-EXECUTE sp_refreshsqlmodule N'[dbo].[usp_InsertHistoricFamily]';
-
-
-GO
-PRINT N'Refreshing [dbo].[usp_SLInsertedDataMetaData]...';
-
-
-GO
-EXECUTE sp_refreshsqlmodule N'[dbo].[usp_SLInsertedDataMetaData]';
-
-
-GO
-PRINT N'Refreshing [dbo].[usp_InsertBloodTestResults]...';
-
-
-GO
-EXECUTE sp_refreshsqlmodule N'[dbo].[usp_InsertBloodTestResults]';
-
-
-GO
-PRINT N'Refreshing [dbo].[usp_InsertGiftCard]...';
-
-
-GO
-EXECUTE sp_refreshsqlmodule N'[dbo].[usp_InsertGiftCard]';
-
-
-GO
-PRINT N'Refreshing [dbo].[usp_InsertNewQuestionnaireWebScreen]...';
-
-
-GO
-EXECUTE sp_refreshsqlmodule N'[dbo].[usp_InsertNewQuestionnaireWebScreen]';
-
-
-GO
-PRINT N'Refreshing [dbo].[usp_SLAllBloodTestResultsMetaData]...';
-
-
-GO
-EXECUTE sp_refreshsqlmodule N'[dbo].[usp_SLAllBloodTestResultsMetaData]';
-
-
-GO
-PRINT N'Refreshing [dbo].[usp_SlCountPeopleByAgeGroup]...';
-
-
-GO
-EXECUTE sp_refreshsqlmodule N'[dbo].[usp_SlCountPeopleByAgeGroup]';
-
-
-GO
 PRINT N'Refreshing [dbo].[usp_InsertNewBloodLeadTestResultsWebScreen]...';
 
 
 GO
 EXECUTE sp_refreshsqlmodule N'[dbo].[usp_InsertNewBloodLeadTestResultsWebScreen]';
-
-
-GO
-PRINT N'Refreshing [dbo].[usp_InsertPersontoEthnicity]...';
-
-
-GO
-EXECUTE sp_refreshsqlmodule N'[dbo].[usp_InsertPersontoEthnicity]';
-
-
-GO
-PRINT N'Checking existing data against newly created constraints';
-
-
-GO
-USE [$(DatabaseName)];
-
-
-GO
-ALTER TABLE [dbo].[FamilyNotes] WITH CHECK CHECK CONSTRAINT [FK_FamilyNotes_Family];
-
-ALTER TABLE [dbo].[TravelNotes] WITH CHECK CHECK CONSTRAINT [FK_TravelNotes_Family];
-
-ALTER TABLE [dbo].[PersontoFamily] WITH CHECK CHECK CONSTRAINT [FK_PersontoFamily_Family];
-
-ALTER TABLE [dbo].[PersontoEthnicity] WITH CHECK CHECK CONSTRAINT [FK_PersontoEthnicity_Ethnicity];
-
-ALTER TABLE [dbo].[PersontoEthnicity] WITH CHECK CHECK CONSTRAINT [FK_PersontoEthnicity_Person];
 
 
 GO
