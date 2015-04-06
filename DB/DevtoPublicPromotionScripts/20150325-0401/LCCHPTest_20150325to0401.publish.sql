@@ -13,8 +13,8 @@ SET NUMERIC_ROUNDABORT OFF;
 
 
 GO
-:setvar DatabaseName "LCCHPTest"
-:setvar DefaultFilePrefix "LCCHPTest"
+:setvar DatabaseName "LCCHPPublic"
+:setvar DefaultFilePrefix "LCCHPPublic"
 :setvar DefaultDataPath "D:\MSSQL\Data\"
 :setvar DefaultLogPath "D:\MSSQL\Log\"
 
@@ -40,6 +40,11 @@ USE [$(DatabaseName)];
 
 
 GO
+
+PRINT N'Renaming Family.inandout to Family.Petsinandout'
+
+EXEC sp_rename 'Family.inandout','Petsinandout'
+
 PRINT N'Altering [dbo].[usp_InsertPerson]...';
 
 
