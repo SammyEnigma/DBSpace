@@ -1,0 +1,2 @@
+Msg 208, Level 16, State 1, Server WIN-1M8NQQ69OEH, Line 1
+Invalid object name 'SampleType'.
