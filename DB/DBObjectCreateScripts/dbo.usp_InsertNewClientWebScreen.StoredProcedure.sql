@@ -1,7 +1,7 @@
 USE [LCCHPDev]
 GO
 
-/****** Object:  StoredProcedure [dbo].[usp_InsertNewClientWebScreen]    Script Date: 4/28/2015 12:05:12 AM ******/
+/****** Object:  StoredProcedure [dbo].[usp_InsertNewClientWebScreen]    Script Date: 4/28/2015 11:36:32 PM ******/
 SET ANSI_NULLS ON
 GO
 
