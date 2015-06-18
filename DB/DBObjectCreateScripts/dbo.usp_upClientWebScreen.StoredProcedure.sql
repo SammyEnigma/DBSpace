@@ -1,13 +1,10 @@
 USE [LCCHPDev]
 GO
-
-/****** Object:  StoredProcedure [dbo].[usp_upClientWebScreen]    Script Date: 4/28/2015 11:35:32 PM ******/
+/****** Object:  StoredProcedure [dbo].[usp_upClientWebScreen]    Script Date: 6/18/2015 5:16:29 PM ******/
 SET ANSI_NULLS ON
 GO
-
 SET QUOTED_IDENTIFIER ON
 GO
-
 
 
 -- =============================================
@@ -35,13 +32,16 @@ CREATE PROCEDURE [dbo].[usp_upClientWebScreen]
 	@New_MovedDate date = NULL,
 	@New_isClosed bit = 0,
 	@New_isResolved bit = 0,
-	@New_Notes varchar(3000) = NULL,
+	@New_ClientNotes varchar(3000) = NULL,
 	@New_GuardianID int = NULL,
 	@New_PersonCode smallint = NULL,
 	@New_isSmoker bit = NULL,
 	@New_isClient bit = NULL,
-	@New_isNursing bit = NULL,
-	@New_isPregnant bit = NULL,
+	@New_NursingMother bit = NULL,
+	@New_NursingInfant bit = NULL,
+	@New_Pregnant bit = NULL,
+	--@New_isNursing bit = NULL,
+	--@New_isPregnant bit = NULL,
 	@New_EthnicityID tinyint = NULL,
 	@New_LanguageID tinyint = NULL,
 	@New_PrimaryLanguage bit = 1,
@@ -97,13 +97,14 @@ BEGIN
 						@New_MovedDate = @New_MovedDate,
 						@New_isClosed = @New_isClosed,
 						@New_isResolved = @New_isResolved,
-						@New_Notes = @New_Notes,
+						@New_PersonNotes = @New_ClientNotes,
 						@New_GuardianID = @New_GuardianID,
 						@New_PersonCode = @New_PersonCode,
 						@New_isSmoker = @New_isSmoker,
 						@New_isClient = @New_isClient,
-						@New_isNursing = @New_isNursing,
-						@New_isPregnant = @New_isPregnant,
+						@New_NursingMother = @New_NursingMother,
+						@New_NursingInfant = @New_NursingInfant,
+						@New_Pregnant = @New_Pregnant,
 						@DEBUG = @DEBUG
 
 			-- Associate person to Ethnicity
@@ -173,4 +174,3 @@ END
 
 
 GO
-
