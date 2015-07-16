@@ -1,13 +1,12 @@
 USE [LCCHPDev]
 GO
 
-/****** Object:  StoredProcedure [dbo].[usp_SlClientFollowUp]    Script Date: 7/16/2015 12:20:23 PM ******/
+/****** Object:  StoredProcedure [dbo].[usp_SlListFamilyMembers]    Script Date: 7/16/2015 12:56:29 AM ******/
 SET ANSI_NULLS ON
 GO
 
 SET QUOTED_IDENTIFIER ON
 GO
-
 
 -- =============================================
 -- Author:		Liam Thier
@@ -42,7 +41,7 @@ BEGIN
 	IF (@EndDate IS NOT NULL) 
 		SELECT @spexecuteSQLStr = @spexecuteSQLStr
 			+ N' AND [P].[RetestDate] < @EndDate';
-
+	SELECT @spexecuteSQLStr = @spexecuteSQLStr + ' order by [P].[RetestDate] ASC'
 
 	IF (DateDiff(yy,@EndDate,@StartDate) > 4) 
 		SET @Recompile = 0;
@@ -71,6 +70,6 @@ BEGIN
 			RETURN ERROR_NUMBER()
 		END CATCH;
 END
-
 GO
+
 
