@@ -1,13 +1,11 @@
--- Insert Into [Source] (SourceName) Select distinct [Source] from TESTAccessImport..Questionnaires
-
---	update TESTAccessImport..Questionnaires set QuestDate = '19980601' where QuestDate = '0698-12-04 00:00:00.0000000'
-
 use LCCHPTestImport
 go
 
+-- ~ :50 seconds
+
 -- Update all columns less the ModifiedDate
-insert into  Questionnaire (QuestionnaireDate,
-			[QuestionnaireDataSourceID]
+insert into  Questionnaire (QuestionnaireDate
+			, [QuestionnaireDataSourceID]
 			, VisitRemodeledProperty
 			, RemodelPropertyDate
 			, isExposedtoPeelingPaint
@@ -19,17 +17,23 @@ insert into  Questionnaire (QuestionnaireDate,
 			SELECT QDate = cast(TQ.QuestDate as date)
 						, QDS.QuestionnaireDataSourceID
 						, TQ.VisitRemodeled
-						 , RemodBldAge = case
+						, RemodBldAge = case
 											WHEN TQ.RemodBldgAge = 'Before 1960' THEN '19500101'
 											WHEN TQ.RemodBldgAge = 'After 1960' THEN '19600101'
 											WHEN TQ.RemodBldgAge = '1800''s' THEN '18500101'
 										END
+						, PaintBldgAge = case
+											WHEN TQ.PaintBldgAge = 'Before 1960' THEN '19500101'
+											WHEN TQ.PaintBldgAge = 'After 1960' THEN '19600101'
+											WHEN TQ.PaintBldgAge = '1800''s' THEN '18500101'
+										END
 						, TQ.PaintPeel
-						, TQ.Vitamins, NursingInfant = CASE 
-										WHEN dbo.udf_CalculateAge(P.BirthDate,TQ.QuestDate) < 10 THEN TQ.Nursing
-									END,
-									NursingMother = CASE
-										WHEN P.Gender = 'F' AND dbo.udf_CalculateAge(P.BirthDate,TQ.QuestDate) > 15 THEN TQ.Nursing
+						, TQ.Vitamins
+						, NursingInfant = CASE 
+										WHEN dbo.udf_CalculateAge(P.BirthDate,cast(TQ.QuestDate as date)) < 10 THEN TQ.Nursing
+									END
+						, NursingMother = CASE
+										WHEN P.Gender = 'F' AND dbo.udf_CalculateAge(P.BirthDate,cast(TQ.QuestDate as date)) > 15 THEN TQ.Nursing
 									END	
 						, TQ.Pacifier, TQ.Bottle, TQ.BiteNails, TQ.NonFoodEating, TQ.NonFoodInMouth
 						, TQ.EatOutside, TQ.Sucking, FreqHandWash = CASE 
@@ -52,10 +56,6 @@ insert into  Questionnaire (QuestionnaireDate,
 					JOIN ReviewStatus AS RS ON RS.HistoricReviewStatusID = TQ.ReviewStatusCode
 					order by QuestDate
 
-select count(*) from TESTAccessImport..Questionnaires
-select count(*) from Questionnaire	
-
-
 	-- INsert questionnaire notes
 	Insert into QuestionnaireNotes (QuestionnaireID,Notes)
 		select Q.QuestionnaireID
@@ -66,7 +66,6 @@ select count(*) from Questionnaire
 		 where TAIQ.OtherNotes is not null 
 		 order by childID
 
-	Select * from QuestionnaireNotes
 
 	-- INsert daycare notes
 	Insert into QuestionnaireNotes (QuestionnaireID,Notes)
@@ -81,22 +80,40 @@ select count(*) from Questionnaire
 		-- add RemodBldAge and PaintBldgAge to Questionnaire notes
 		Insert into QuestionnaireNotes (QuestionnaireID,Notes)
 			select Q.QuestionnaireID
-			,concat(isnull(TAIQ.RemodBldgAge,''),'. ',isnull(TAIQ.PaintBldgAge,''))
+			,concat('Building remodel date: ',TAIQ.RemodBldgAge)
 			 from TESTAccessImport..Questionnaires AS TAIQ
 			 JOIN Person AS P ON TAIQ.ChildID = P.HistoricChildID
 			 JOIN Questionnaire AS Q on Q.QuestionnaireDate = TAIQ.QuestDate AND Q.PersonID = P.PersonID
-			 where TAIQ.RemodBldgAge is not null or TAIQ.PaintBldgAge is not null
+			 where TAIQ.RemodBldgAge is not null-- or TAIQ.PaintBldgAge is not null
 			 order by childID
+
+		Update QuestionnaireNotes set Notes = concat(Notes,'. Building paint date: ',TAIQ.PaintBldgAge)
+			 from TESTAccessImport..Questionnaires AS TAIQ
+			 JOIN Person AS P ON TAIQ.ChildID = P.HistoricChildID
+			 JOIN Questionnaire AS Q on Q.QuestionnaireDate = TAIQ.QuestDate AND Q.PersonID = P.PersonID
+			 where TAIQ.PaintBldgAge is not null
+			-- order by childID
 
 		-- Update last modified date	
 		update LQ
-		SET LQ.ModifiedDate = cast(TQ.UpdateDate as date)
+		SET LQ.ModifiedDate = cast(TQ.UpdateDate as datetime2)
 		from Questionnaire AS LQ
 		JOIN TestAccessImport..Questionnaires AS TQ on LQ.QuestionnaireDate = TQ.QuestDate
 		JOIN Person AS P on P.PersonID = LQ.PersonID AND P.HistoricChildID = TQ.ChildID
 
 
-select QuestDate,RemodBldgAge,PaintBldgAge
---,RemodBlgDate = DateAdd(yy,cast(RemodBldgAge as int),cast(QuestDate as date))
---, PaintBldDate = DateAdd(yy,cast(PaintBldgAge as int),cast(QuestDate as Date))
-from TESTAccessImport..Questionnaires
+--- VALIDATIONS
+-- ensure row counts match
+select count(*) from Questionnaire	
+select count(*) from TESTAccessImport..Questionnaires
+
+-- ensure groupings by remodel date counts match
+select count(RemodelPropertyDate) from Questionnaire 
+where RemodelPropertyDate is not null
+select count(*) from TESTAccessImport..Questionnaires where RemodBldgAge is not null
+
+-- ensure groupings by remodel date counts match
+select count(PaintDate) from Questionnaire 
+where PaintDate is not null
+select count(*) from TESTAccessImport..Questionnaires where PaintBldgAge is not null
+

@@ -1,3 +1,5 @@
+use LCCHPTestImport
+GO
 
   insert into PersontoFamily (PersonID,FamilyID,StartDate,EndDate,PrimaryContactFamily,ReviewStatusID)
 	  select P.PersonID, Fam.familyID,CFL.CFLinkStartDate,CFL.CFLinkEndDate,cast(CFL.PrimaryLink as bit),RS.ReviewStatusID
@@ -8,5 +10,4 @@
 	  where CFL.ChildID is not null and CFL.FamilyID is not null
 
   select count(*) from PersontoFamily
- 
   select count(*) from TESTAccessImport..ChildFamilyLink

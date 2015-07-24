@@ -1,3 +1,4 @@
+-- hobbies identified from child notes table
 Insert into LCCHPTestImport..Hobby
 (LeadExposure,Hobbyname,HobbyDescription) Values
 (1, 'Auto repair',NULL),

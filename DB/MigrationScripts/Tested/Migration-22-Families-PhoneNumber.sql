@@ -1,3 +1,6 @@
+use LCCHPTestImport
+GO
+
 CREATE Function [fnRemoveNonNumericCharacters](@strText VARCHAR(1000))
 RETURNS VARCHAR(1000)
 AS
@@ -39,10 +42,19 @@ JOIN PhoneNumber AS PH on
 WHERE PH.PhoneNumberTypeID is null and F.WorkPHone is not null
 GO
 
+select count(*) from phonenumber
+select count(*) from
+(
+Select distinct PHONE = [dbo].[fnRemoveNonNumericCharacters](F.HomePhone)
+	FROM testAccessImport..Families AS F
+	WHERE HomePHone is not null 
+	UNION
+	Select distinct PHONE = [dbo].[fnRemoveNonNumericCharacters](F.WorkPhone)
+	FROM testAccessImport..Families AS F
+	WHERE WorkPHone is not null
+) as ExistingPHone
 
 DROP Function [fnRemoveNonNumericCharacters]
 GO
-
-select * from phonenumber
 
 

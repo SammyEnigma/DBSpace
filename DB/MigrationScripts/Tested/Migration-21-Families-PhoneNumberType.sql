@@ -15,8 +15,6 @@ select distinct PhoneCode,
 	END
 	 from TESTAccessImport..Families where PhoneCode is not null
 	
-
-
 select * from PhoneNumberType
 
 

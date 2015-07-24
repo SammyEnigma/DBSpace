@@ -11,4 +11,5 @@ select 'Venous','V'
 UNION
 select 'Capillary','C'
 
+-- sample types from access and lcchp group
 Select * from LCCHPTestImport..SampleType

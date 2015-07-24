@@ -1,6 +1,7 @@
 use LCCHPTestImport
 GO
 
+-- daycare choices specified by LCCHP group
 Insert into Daycare (DaycareName,DaycareDescription) values ('Daycare','Child attends daycare'),
 ('Preschool','Child attends preschool'),
 ('Morning Star','Child attends Morning Star'),
@@ -10,3 +11,4 @@ Insert into Daycare (DaycareName,DaycareDescription) values ('Daycare','Child at
 
 
 
+select * from Daycare
