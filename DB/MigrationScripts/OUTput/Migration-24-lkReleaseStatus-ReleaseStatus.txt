@@ -1,0 +1,30 @@
+Changed database context to 'LCCHPPublic'.
+                                                     
+-----------------------------------------------------
+Rows in lkReleaseStatus that are not in ReleaseStatus
+ReleaseCode
+-----------
+                                                                    
+--------------------------------------------------------------------
+comparing row count of ReleaseStatus to row count of lkReleaseStatus
+           
+-----------
+          4
+           
+-----------
+          4
+                                                          
+----------------------------------------------------------
+comparing rows of ReleaseStatus to rows of lkReleaseStatus
+HistoricReleaseStatusID ReleaseStatusName                                 
+----------------------- --------------------------------------------------
+N                       Not in the PbB program, but in Env.               
+O                       Other, no reminder card next yr, previously in PbB
+R                       Tested & Released to Environmental                
+T                       Tested & Not Released                             
+ReleaseCode ReleaseStatus                                     
+----------- --------------------------------------------------
+N           Not in the PbB program, but in Env.               
+O           Other, no reminder card next yr, previously in PbB
+R           Tested & Released to Environmental                
+T           Tested & Not Released                             

@@ -1,0 +1,45 @@
+Changed database context to 'LCCHPPublic'.
+                                                                  
+------------------------------------------------------------------
+comparing row count of ActionStatus to row count of lkActionStatus
+           
+-----------
+         14
+           
+-----------
+         14
+                                                        
+--------------------------------------------------------
+comparing rows of ActionStatus to rows of lkActionStatus
+HistoricActionStatusID ActionStatusName                                  
+---------------------- --------------------------------------------------
+A                      Built after 1978                                  
+C                      Complete                                          
+D                      Denied Access                                     
+E                      Media not present                                 
+F                      Weather pending                                   
+G                      Under construction                                
+H                      Action - holding to conduct                       
+N                      No action                                         
+P                      Partially complete                                
+S                      Not Sampled                                       
+U                      Holding for work group                            
+W                      Waiting for workgroup review                      
+X                      Developing Designs                                
+Z                      Holding for owner decision                        
+ActionStatusCode ActionStatus                  
+---------------- ------------------------------
+A                Built after 1978              
+C                Complete                      
+D                Denied Access                 
+E                Media not present             
+F                Weather pending               
+G                Under construction            
+H                Action - holding to conduct   
+N                No action                     
+P                Partially complete            
+S                Not Sampled                   
+U                Holding for work group        
+W                Waiting for workgroup review  
+X                Developing Designs            
+Z                Holding for owner decision    

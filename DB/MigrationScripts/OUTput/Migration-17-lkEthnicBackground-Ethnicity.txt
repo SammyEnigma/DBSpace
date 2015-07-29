@@ -1,0 +1,32 @@
+Changed database context to 'LCCHPPublic'.
+                                                    
+----------------------------------------------------
+Rows in lkEthnicBackground that are not in Ethnicity
+EthnicCode
+----------
+                                                       
+-------------------------------------------------------
+comparing row count of ethnicity and lkEthnicBackground
+           
+-----------
+          5
+           
+-----------
+          5
+                                                  
+--------------------------------------------------
+listing Ethnicity rows and lkEthnicbackground rows
+HistoricEthnicityCode Ethnicity                                         
+--------------------- --------------------------------------------------
+A                     Asian                                             
+B                     Black (Non Hispanic)                              
+H                     White Hispanic                                    
+N                     Native American                                   
+W                     White (Non Hispanic)                              
+EthnicCode EthnicBackground    
+---------- --------------------
+A          Asian               
+B          Black (Non Hispanic)
+H          White Hispanic      
+N          Native American     
+W          White (Non Hispanic)

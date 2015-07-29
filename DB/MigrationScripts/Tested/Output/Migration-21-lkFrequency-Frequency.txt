@@ -1,0 +1,30 @@
+Changed database context to 'LCCHPPublic'.
+                                             
+---------------------------------------------
+Rows in lkFrequency that are not in Frequency
+FrequencyCode
+-------------
+                                                
+------------------------------------------------
+comparing row count of Frequency and lkFrequency
+           
+-----------
+          4
+           
+-----------
+          4
+                                           
+-------------------------------------------
+listing Frequency rows and lkFrequency rows
+HistoricFrequencyID FrequencyName                                     
+------------------- --------------------------------------------------
+1                   Very Little                                       
+2                   Once or twice a day                               
+3                   More than twice per day                           
+4                   Many Times per day                                
+FrequencyCode Frequency                
+------------- -------------------------
+            1 Very Little              
+            2 Once or twice a day      
+            3 More than twice per day  
+            4 Many Times per day       

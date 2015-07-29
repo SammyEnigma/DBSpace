@@ -1,0 +1,18 @@
+Changed database context to 'LCCHPPublic'.
+           
+-----------
+          9
+            
+------------
+listing labs
+LabID       LabName                                           
+----------- --------------------------------------------------
+          1 DONE AT CLINIC                                    
+          8 EVMC                                              
+          5 LAB CORP                                          
+          2 Lead Tech                                         
+          7 LeadCare II                                       
+          3 Mayo Lab                                          
+          4 Quest Diagnostic                                  
+          9 RMFP                                              
+          6 Tamarac                                           

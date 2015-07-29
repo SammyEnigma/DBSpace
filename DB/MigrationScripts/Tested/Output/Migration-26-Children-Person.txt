@@ -1,0 +1,823 @@
+Changed database context to 'LCCHPPublic'.
+                                 
+---------------------------------
+inserting from children to person
+                                      
+--------------------------------------
+inserting release notes to personnotes
+                                     
+-------------------------------------
+inserting travel notes to personnotes
+LastName                                           FirstName                                          ChildID     TravelNotes                                                                                                                                                                                                                                                    
+-------------------------------------------------- -------------------------------------------------- ----------- ---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
+                                    
+------------------------------------
+inserting child notes to personnotes
+LastName                                           FirstName                                          ChildID     TravelNotes                                                                                                                                                                                                                                                    
+-------------------------------------------------- -------------------------------------------------- ----------- ---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
+                      
+----------------------
+updating modified date
+                                                
+------------------------------------------------
+comparing person row count to children row count
+           
+-----------
+       3206
+           
+-----------
+       3206
+                                                              
+--------------------------------------------------------------
+looking for missing historic childIDs (expect 10576 and 10577)
+ChildID    
+-----------
+      10576
+      10577
+      10578
+      10579
+      10580
+      10581
+      10582
+      10583
+      10584
+      10585
+      10586
+      10587
+      10588
+      10589
+      10591
+      10592
+      10594
+      10595
+      10596
+      10597
+      10598
+      10602
+      10603
+      10604
+      10605
+      10606
+      10607
+      10608
+      10609
+      10610
+      10611
+      10612
+      10613
+      10614
+      10615
+      10624
+      10625
+      10626
+      10628
+      10629
+      10630
+      10631
+      10633
+      10634
+      10635
+      10636
+      10637
+      10638
+      10640
+      10642
+      10644
+      10649
+      10651
+      10652
+      10653
+      10654
+      10655
+      10658
+      10659
+      10660
+      10662
+      10663
+      10664
+      10666
+      10667
+      10672
+      10673
+      10674
+      10675
+      10676
+      10678
+      10682
+      10683
+      10684
+      10686
+      10687
+      10689
+      10690
+      10691
+      10693
+      10695
+      10698
+      10704
+      10705
+      10711
+      10713
+      10714
+      10718
+      10721
+      10722
+      10724
+      10725
+      10726
+      10727
+      10728
+      10729
+      10730
+      10731
+      10732
+      10734
+      10735
+      10737
+      10739
+      10742
+      10743
+      10744
+      10747
+      10748
+      10751
+      10752
+      10753
+      10756
+      10758
+      10759
+      10760
+      10761
+      10763
+      10764
+      10765
+      10766
+      10768
+      10769
+      10770
+      10771
+      10772
+      10773
+      10774
+      10776
+      10777
+      10778
+      10779
+      10782
+      10783
+      10784
+      10785
+      10787
+      10788
+      10789
+      10790
+      10792
+      10793
+      10794
+      10795
+      10796
+      10797
+      10798
+      10799
+      10800
+      10801
+      10802
+      10803
+      10804
+      10805
+      10806
+      10807
+      10808
+      10809
+      10811
+      10813
+      10815
+      10816
+      10817
+      10818
+      10819
+      10821
+      10822
+      10823
+      10824
+      10825
+      10826
+      10827
+      10828
+      10829
+      10830
+      10831
+      10832
+      10833
+      10834
+      10835
+      10836
+      10837
+      10838
+      10839
+      10842
+      10843
+      10844
+      10845
+      10847
+      10848
+      10849
+      10851
+      10852
+      10853
+      10854
+      10856
+      10858
+      10859
+      10860
+      10862
+      10864
+      10866
+      10867
+      10868
+      10869
+      10870
+      10871
+      10872
+      10873
+      10874
+      10877
+      10878
+      10881
+      10882
+      10883
+      10884
+      10885
+      10886
+      10887
+      10888
+      10889
+      10890
+      10891
+      10892
+      10893
+      10894
+      10895
+      10897
+      10899
+      10901
+      10902
+      10904
+      10905
+      10909
+      10910
+      10911
+      10912
+      10914
+      10915
+      10916
+      10917
+      10918
+      10919
+      10920
+      10921
+      10922
+      10923
+      10924
+      10925
+      10926
+      10927
+      10928
+      10929
+      10931
+      10932
+      10933
+      10934
+      10935
+      10936
+      10937
+      10938
+      10939
+      10940
+      10941
+      10942
+      10943
+      10945
+      10946
+      10947
+      10948
+      10949
+      10950
+      10957
+      10958
+      10961
+      10965
+      10966
+      10967
+      10968
+      10969
+      10970
+      10971
+      10972
+      10973
+      10974
+      10975
+      10976
+      10977
+      10979
+      10980
+      10981
+      10982
+      10983
+      10984
+      10985
+      10986
+      10987
+      10988
+      10989
+      10990
+      10992
+      10993
+      10995
+      10996
+      10997
+      10998
+      10999
+      11000
+      11001
+      11002
+      11003
+      11004
+      11005
+      11006
+      11008
+      11009
+      11010
+      11011
+      11012
+      11014
+      11015
+      11016
+      11019
+      11020
+      11021
+      11022
+      11023
+      11024
+      11025
+      11026
+      11027
+      11028
+      11030
+      11031
+      11032
+      11033
+      11034
+      11035
+      11036
+      11037
+      11038
+      11039
+      11040
+      11041
+      11042
+      11043
+      11044
+      11045
+      11046
+      11047
+      11048
+      11049
+      11050
+      11051
+      11052
+      11053
+      11054
+      11055
+      11056
+      11057
+      11058
+      11059
+      11060
+      11061
+      11062
+      11063
+      11064
+      11065
+      11066
+      11067
+      11068
+      11069
+      11070
+      11071
+      11072
+      11073
+      11074
+      11075
+      11076
+      11077
+     106990
+                                                            
+------------------------------------------------------------
+looking for release notes that were not added to personnotes
+LastName                                           FirstName                                          ChildID     ReleaseNotes                                      
+-------------------------------------------------- -------------------------------------------------- ----------- --------------------------------------------------
+                                                           
+-----------------------------------------------------------
+looking for travel notes that were not added to personnotes
+LastName                                           FirstName                                          ChildID     ReleaseNotes                                      
+-------------------------------------------------- -------------------------------------------------- ----------- --------------------------------------------------
+                                                          
+----------------------------------------------------------
+looking for child notes that were not added to personnotes
+LastName                                           FirstName                                          ChildID     ReleaseNotes                                      
+-------------------------------------------------- -------------------------------------------------- ----------- --------------------------------------------------
+                                                                                                                              
+------------------------------------------------------------------------------------------------------------------------------
+comparing row count of Person to row count of Children -- should be 2 less in Person than Children -- Child ID 10576 and 10577
+           
+-----------
+       3206
+           
+-----------
+       3586
+                                                                                            
+--------------------------------------------------------------------------------------------
+ChildIDs in Children but not person - need to import 10577 manually from email from Cornelia
+ChildID     LastName                                           FirstName                                         
+----------- -------------------------------------------------- --------------------------------------------------
+      10576 Arocho                                             Jaden                                             
+      10577 NULL                                               NULL                                              
+      10578 Cornella                                            Oliver                                           
+      10579 Grose                                              Evan                                              
+      10580 Aguilar                                                                                              
+      10581 Aguilar                                             Luis                                             
+      10582 Ortega                                              Tlaloc                                           
+      10583 Felix                                               Aracely                                          
+      10584 Sierra                                              Susana                                           
+      10585 Legardo                                             Rodrigo                                          
+      10586 West                                                Teresa                                           
+      10587 Villa                                                                                                
+      10588 Villa                                               Ashley                                           
+      10589 Mendez-Parra                                       Emmanuel                                          
+      10591 Flores                                                                                               
+      10592 Flores                                              Lica                                             
+      10594 Ringgenbeerg                                                                                         
+      10595 Palmer                                             Abbey                                             
+      10596 Suy                                                                                                  
+      10597 Duggin                                              Erin                                             
+      10598 Jimenez                                            Xavier                                            
+      10602 Jimenez                                             Eli                                              
+      10603 Hernandez                                           Juan Pablo                                       
+      10604 Rea. Sophia                                                                                          
+      10605 Benninger                                           Ty                                               
+      10606 Watkins                                             Agent                                            
+      10607 Lopez                                               Nehemias                                         
+      10608 Harkness                                            Ruby                                             
+      10609 Greene                                              Henry                                            
+      10610 Fike                                                Adalynn                                          
+      10611 DeLara                                              Joanquin                                         
+      10612 Cano Sandoval                                       Jaritza                                          
+      10613 Cano Sandoval                                       Claritza                                         
+      10614 Cano Sandoval                                       Jeolosmy                                         
+      10615 Torres                                              Aurora                                           
+      10624 Bottenfield                                         Melissa                                          
+      10625 Chavez                                              Raul                                             
+      10626 Chavez                                              Maria                                            
+      10628 Fiedler                                             Helen                                            
+      10629 Casas                                               Leo                                              
+      10630 Herzet                                              Alina                                            
+      10631 Rea                                                 Jesse                                            
+      10633 Husk                                                Miles                                            
+      10634 Marcum                                              Kali                                             
+      10635 Levi                                                Avery                                            
+      10636 Perez                                               Adriana                                          
+      10637 Barber                                              Darlene                                          
+      10638 Bordogna                                            Everett                                          
+      10640 Mudge                                               Sarah.                                           
+      10642 mendez-Parra                                       Emmanuel                                          
+      10644 Strahle                                             Justyn                                           
+      10649 Hirchert                                            Eden                                             
+      10651 Perry                                               Jaycee                                           
+      10652 Perry                                               Thomas                                           
+      10653 Jeffery                                             Sarah                                            
+      10654 Rivera Aariah                                                                                        
+      10655 Mallozzi                                            Hattie                                           
+      10658 Saldivar                                            Meredith                                         
+      10659 Martinez                                            Eduardo                                          
+      10660 Schuiteman                                          Cameron L.                                       
+      10662 Millard                                             Noah                                             
+      10663 Rodriquez                                           Naomi                                            
+      10664 Ishman                                              Marlee                                           
+      10666 King                                                Owen                                             
+      10667 Medina                                              Kimberly                                         
+      10672 Castillo                                            Santiago                                         
+      10673 Palmer                                              Nicklas                                          
+      10674 Valadez                                             Ximena                                           
+      10675 Velasco                                             Jonathan                                         
+      10676 Velasco                                             Daniel                                           
+      10678 Johnson                                             Peyton                                           
+      10682 Irvine                                              Donavan                                          
+      10683 Mangano                                             Anthony                                          
+      10684 Wells-Hall                                          Talan                                            
+      10686 Jaramillo                                          Mary                                              
+      10687 Medina                                              Jadence                                          
+      10689 Diaz                                                David Renteria                                   
+      10690 Cuna                                                Ivon                                             
+      10691 Silva                                               Faviola Camila                                   
+      10693 Thompson                                            Priscilla                                        
+      10695 Guess                                               Krista                                           
+      10698 Contreras                                           Sandra                                           
+      10704 Carpenter                                           Seth                                             
+      10705 Lemon                                               Melina                                           
+      10711 Pizana                                              Valerie                                          
+      10713 Martinez                                            Andrerw                                          
+      10714 Martinez                                            Ashley                                           
+      10718 Mata                                                Matin                                            
+      10721 Perez                                               Rodolfo                                          
+      10722 Tweddel                                             Tucker                                           
+      10724 Hartman                                             Kyle                                             
+      10725 Guzman                                              Adriana                                          
+      10726 Boja                                               Todd Giovani                                      
+      10727 Chavez                                              Jonathan                                         
+      10728 Reyes                                               Maylin                                           
+      10729 Reyes                                               Issac                                            
+      10730 Carpenter                                           Matthew                                          
+      10731 Godoya                                              Fatima Blanca                                    
+      10732 Raftree                                             Bridget                                          
+      10734 Sparkman                                            Kristin                                          
+      10735 Sparkman                                            Luke                                             
+      10737 Rocha                                               Emiliano                                         
+      10739 Rivera                                              Brianna                                          
+      10742 Perea                                               Margarita                                        
+      10743 Rea                                                 Maritza                                          
+      10744 Harkness                                            Jeff                                             
+      10747 Contreas                                            Samantha                                         
+      10748 Tapia                                               Angelique                                        
+      10751 Reas. Jessica                                                                                        
+      10752 Aumada                                              Leland                                           
+      10753 Larsen                                              Charlie                                          
+      10756 Sotor                                               Toby                                             
+      10758 Sotor                                               Howard                                           
+      10759 Alvarez                                             Erick                                            
+      10760 Gonzalez                                            Lucia                                            
+      10761 Bautista                                            Eduardo                                          
+      10763 Tweddel                                             Trace                                            
+      10764 Tweddel                                             Carrie                                           
+      10765 Hinojos                                             Genesis                                          
+      10766 Vrancken                                            Ava                                              
+      10768 Hofer                                               Ryden                                            
+      10769 Williams                                            Lorenda                                          
+      10770 Clisto                                              Messiah                                          
+      10771 Spinner                                             Travis                                           
+      10772 McCoy                                               Landon                                           
+      10773 Ramirez                                             Cruz                                             
+      10774 Archuleta                                           Leo                                              
+      10776 Hofer                                               Kelley                                           
+      10777 Hofer                                               Andy                                             
+      10778 Garcia                                              Valentina                                        
+      10779 Garcia                                             Jacob                                             
+      10782 Talbot                                              Evelyn                                           
+      10783 Talbot                                              Eliot                                            
+      10784 Kuczko                                              Adrianna                                         
+      10785 Macias                                              Natalie                                          
+      10787 Krupa                                               Iwo                                              
+      10788 Hernandez                                           Aiden                                            
+      10789 Hernandez-Lazalde                                  Leilani                                           
+      10790 Martinez                                            Madison                                          
+      10792 Martinez Camp Kelly                                                                                  
+      10793 Martinez                                            Kara                                             
+      10794 Cooper                                              Kyle                                             
+      10795 Nacke                                               Gaige                                            
+      10796 Anderson                                            Noah                                             
+      10797 Westendorf                                          Sylas                                            
+      10798 Bunch                                               Amber                                            
+      10799 Bunch                                               Ephraim                                          
+      10800 Bunch                                               Michaela                                         
+      10801 Curtis                                              Noah                                             
+      10802 Curtis                                              Emery                                            
+      10803 Johnson                                             Chelsea                                          
+      10804 Kilpatrick                                          Meredith                                         
+      10805 Anderson                                            Wilson                                           
+      10806 Martinez                                            Olivia                                           
+      10807 Luyken                                              Willem                                           
+      10808 Luyken                                              Sophie                                           
+      10809 Luyken                                              Julia                                            
+      10811 Cerise                                              Jade                                             
+      10813 Smith                                               Kaleb                                            
+      10815 Saville                                             Adrian                                           
+      10816 Marquez                                             Haden                                            
+      10817 Stanek                                              Finley                                           
+      10818 Stanek                                              Ann                                              
+      10819 Garcia                                              Cesar                                            
+      10821 Jump                                                Harmony                                          
+      10822 Reiff                                               Ethan                                            
+      10823 Cameron                                             Lorena                                           
+      10824 Sanchez                                             Sara Jane                                        
+      10825 Rocio                                               Viviana Cano                                     
+      10826 Chavez                                              Donovan                                          
+      10827 Quinn                                               Francie                                          
+      10828 Dougherty                                           Mia                                              
+      10829 Gronwald                                            Brycen                                           
+      10830 Trower                                              Christian                                        
+      10831 Lein                                                Arvery                                           
+      10832 Lathrop                                             Carson                                           
+      10833 Terrance                                            Ryan                                             
+      10834 Rivera                                              Maiya                                            
+      10835 Bertolas                                            Kuper                                            
+      10836 Gomez                                               Demetrius                                        
+      10837 Gomez                                               Rosalie                                          
+      10838 Smith                                               Emily                                            
+      10839 Nachtrieb                                           Eric                                             
+      10842 Rascon                                              Gabriela                                         
+      10843 Taylor                                              Ebuna                                            
+      10844 Mejia                                               Matthew                                          
+      10845 Littlepage                                          Kelten                                           
+      10847 Carpenter                                           Matthew                                          
+      10848 Ditchen                                             Naithyn                                          
+      10849 Ditchen                                             Caylieb                                          
+      10851 Schuknecht                                          Axl                                              
+      10852 Contu                                               Isaac                                            
+      10853 Noeth                                               Serinity                                         
+      10854 Corman                                              Kenya                                            
+      10856 Corman                                              Kaleb                                            
+      10858 Corman                                              Nicole                                           
+      10859 Wupperman                                           Heidi                                            
+      10860 Schuknecut                                          Eli                                              
+      10862 Bustillos                                           Said                                             
+      10864 Williams                                            Grant                                            
+      10866 Pugliese                                            Justin                                           
+      10867 Mier Costillo                                       Juan Carlos                                      
+      10868 Lopez                                               Paulette                                         
+      10869 Wilkins                                             Alexis                                           
+      10870 Anderson                                            Crislyn                                          
+      10871 Jones                                               Logan                                            
+      10872 Benitez                                             Laura                                            
+      10873 Olvera                                              Elizabeth                                        
+      10874 Gab                                                 Thea                                             
+      10877 Pedersen                                            Lacey                                            
+      10878 Pedersen                                            Autumn                                           
+      10881 Granbeck                                            Othelie                                          
+      10882 Flores                                              Darren                                           
+      10883 Kupfer                                              Kimberly                                         
+      10884 Shaefer                                             Melanie                                          
+      10885 Rodriquez                                           Esparanza                                        
+      10886 Fernando                                            Iris                                             
+      10887 Bujanda                                             Jasmin                                           
+      10888 Hernandez                                           Mattisyn                                         
+      10889 Duron                                               Diana                                            
+      10890 Orenday                                             Aliyah                                           
+      10891 Becker                                              Jessica                                          
+      10892 Reveles                                             Jaqueline                                        
+      10893 Sanchez                                             Chantell                                         
+      10894 Romero                                              Emmanuel                                         
+      10895 Romero                                              Eliyah                                           
+      10897 Handergard                                          Maggie                                           
+      10899 Olvera                                              Ingrid                                           
+      10901 Fike                                                Schaulis                                         
+      10902 Krupa                                               Renata                                           
+      10904 Bryan                                               Katie                                            
+      10905 Frye                                                Phoebe                                           
+      10909 Knerr                                               Jonathan                                         
+      10910 Knerr                                               Leslie                                           
+      10911 Anzbeth                                             Victoria                                         
+      10912 Tahoney                                             Kelly                                            
+      10914 Spear                                               Galvin                                           
+      10915 Chavez                                              Tino                                             
+      10916 Ehlenfeldt                                          Kenneth                                          
+      10917 Rea                                                 Guadalupe                                        
+      10918 Perez                                               Daniel                                           
+      10919 Holte                                               Liam                                             
+      10920 Holt                                                Victoria                                         
+      10921 Lobato                                              Kauani                                           
+      10922 Lobato                                              Keone                                            
+      10923 Rascon                                              Alexis                                           
+      10924 Casados                                             Melamie                                          
+      10925 Olvera                                              Elizabeth                                        
+      10926 Olvera                                              Camila                                           
+      10927 Woods                                               Samara                                           
+      10928 Woods                                               Ariella                                          
+      10929 Woods                                               Christina                                        
+      10931 Chavez                                              Elizabeth                                        
+      10932 Rios                                                Norma                                            
+      10933 Chavez                                              Jesus                                            
+      10934 Gallegos                                            Adan                                             
+      10935 Tufte                                               Eola                                             
+      10936 Tufte                                               Cresen                                           
+      10937 Harbin                                              Nevaeh                                           
+      10938 Rivera                                              Vanessa                                          
+      10939 Logan                                               Jayme                                            
+      10940 Morin                                               Braxton                                          
+      10941 Pizana                                              Andrea                                           
+      10942 Duggan                                              Megan                                            
+      10943 Olivas                                              Mario                                            
+      10945 Woodcade                                            Jason                                            
+      10946 Woodcade                                            Brody                                            
+      10947 Scott                                               David                                            
+      10948 Scott                                               Hannah                                           
+      10949 Deihl III                                           Howard                                           
+      10950 Garrod                                              Casandra                                         
+      10957 Lemon                                               Mercedes                                         
+      10958 Hickerson                                           Griffin                                          
+      10961 Sandahl                                             Carson                                           
+      10965 Millard                                             Noah                                             
+      10966 Lujan                                               Jacqline                                         
+      10967 Sandhal                                             Lisa                                             
+      10968 Holbrook                                            Kylie                                            
+      10969 Quick                                               Keira                                            
+      10970 Garcia                                              Lexi                                             
+      10971 Woodland                                            Madison                                          
+      10972 Flores                                              Adaly                                            
+      10973 Hernandez                                           Makenna                                          
+      10974 Flores                                              Dominique                                        
+      10975 Molina                                              Brayan                                           
+      10976 Padilla                                             Mya                                              
+      10977 Short                                               Priscilla                                        
+      10979 Campbell                                            McKinley                                         
+      10980 Peterson                                            Maxwell                                          
+      10981 Peterson                                            Addison                                          
+      10982 Medina                                              Monique                                          
+      10983 Roy                                                 Kristine                                         
+      10984 Lopez                                               Joanna                                           
+      10985 Gonzales                                            Caleb                                            
+      10986 Olivas                                              Quaya                                            
+      10987 Briggs                                              Amanda                                           
+      10988 Marcella                                            Abi                                              
+      10989 Klava                                               Julianne                                         
+      10990 Bunch                                               Rebekah                                          
+      10992 Hernandez                                           Derek                                            
+      10993 Sanchez                                             Nohelia                                          
+      10995 Dominquez                                           Brayan                                           
+      10996 Lauchner                                            Beverly                                          
+      10997 Gonzalez                                            Elizabeth                                        
+      10998 Swaner                                              Lincoln                                          
+      10999 Alder                                               Monique                                          
+      11000 Brewster                                            Cielo                                            
+      11001 Burgess                                             Alekzander                                       
+      11002 Robledo-Gutierrez                                   Evanie                                           
+      11003  Silva Ruelas                                       Myrian                                           
+      11004 Ruelas                                              Alfredo Sebastian                                
+      11005 Rico                                                 Bryan David                                     
+      11006 Cooklin                                             Kida                                             
+      11008 Stovall                                             Damian                                           
+      11009 Luna                                                Rufina                                           
+      11010 Arlette Gallegos                                    Mia                                              
+      11011 Chase                                               Jana                                             
+      11012 Rose                                                Holden                                           
+      11014 Garduno                                             Genesis                                          
+      11015 Mendoza                                             Genesis                                          
+      11016 Gurrola-Contreras                                   Alfredo                                          
+      11019 Davison                                             Chase                                            
+      11020 Ruiz                                                Isaac                                            
+      11021 Contreras                                           Diego                                            
+      11022 Rios Hernandez                                      Axel                                             
+      11023 Salcedo                                             Merceydes                                        
+      11024 Martinez                                            Arabella                                         
+      11025 Parr                                                Katrina                                          
+      11026 Washburn                                            Hudson                                           
+      11027 Serna                                               Estrella                                         
+      11028 Casadas Athena                                                                                       
+      11030 Briggs                                              Andreew                                          
+      11031 Sanchez                                             Sebastian                                        
+      11032 Bifano                                              Bernadette                                       
+      11033 Jaramillo                                           Vanessa                                          
+      11034 De La Cruz                                          Nancy                                            
+      11035 Luna                                                Ruby                                             
+      11036 Galarza                                             Levi                                             
+      11037 Mendoza                                             Genesis                                          
+      11038 Mohrmann                                            Finn                                             
+      11039 Moore                                               Jennifer                                         
+      11040 Henry                                               Zander                                           
+      11041 Reyes                                               Claudia                                          
+      11042 Cavalliu- Stockey                                   Ryan                                             
+      11043 Elliott                                             Robert                                           
+      11044 Callejos                                            Mia Isabella                                     
+      11045 Medina                                              Camila                                           
+      11046 Ferguson                                            Quinlan                                          
+      11047 Gutierrez                                           Nathaniel                                        
+      11048 Horning                                             Asher                                            
+      11049 Mata                                                Liyah V.                                         
+      11050 Blundon                                             Wayke                                            
+      11051 Ponce de Leon                                       Melissa                                          
+      11052 Galazar                                             Jose                                             
+      11053 Barajas                                             Carina                                           
+      11054 Perez                                               Cesar Yahir                                      
+      11055 Gutierrez                                           Luis                                             
+      11056 Valenzuela                                          Nicolas                                          
+      11057 Lopez                                               Naomi                                            
+      11058 Hernandez                                           Mayra                                            
+      11059 Rascon                                              Mia                                              
+      11060 Landa                                               Aaliyah                                          
+      11061 Calvert                                             Haiden                                           
+      11062 Duztinn A.                                                                                           
+      11063 Mallozzi                                            Hobbes                                           
+      11064 Bryan                                               Justin                                           
+      11065 Calvert                                             Satoya (Skye)                                    
+      11066 Rebledo                                             Evanie (Ebony)                                   
+      11067 Gutierrez                                           Nathaniel                                        
+      11068 Aguilar                                             Brandon                                          
+      11069 Romer                                               Craig                                            
+      11070 Dunning                                             Rachael                                          
+      11071 Dussault                                            Frankie (Library)                                
+      11072 Finken                                              Cleo (Library)                                   
+      11073 Powers                                              Nathaniel (Library)                              
+      11074 Lujan                                               Emmerry F.                                       
+      11075 Lujan                                               Jerrline (library)                               
+      11076 Jump                                                Otis (Library)                                   
+      11077 Powers                                              Ashleigh                                         
+     106990 Suy                                                 Joeabed                                          

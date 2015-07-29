@@ -1,0 +1,37 @@
+Changed database context to 'LCCHPPublic'.
+                                                                                       
+---------------------------------------------------------------------------------------
+Comparing row count for area with distinct row count from bloodpbresults and properties
+           
+-----------
+         10
+           
+-----------
+         10
+                                                                            
+----------------------------------------------------------------------------
+comparing rows from area to distinct rows from bloodpbresults and properties
+HistoricAreaID                                    
+--------------------------------------------------
+A                                                 
+B                                                 
+C                                                 
+D                                                 
+E                                                 
+F                                                 
+G                                                 
+H                                                 
+U                                                 
+X                                                 
+area
+----
+A   
+B   
+C   
+D   
+E   
+F   
+G   
+H   
+U   
+X   

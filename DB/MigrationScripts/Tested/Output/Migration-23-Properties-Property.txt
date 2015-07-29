@@ -1,0 +1,27 @@
+Changed database context to 'LCCHPTestImport'.
+
+(26946 rows affected)
+
+(38630 rows affected)
+
+(38630 rows affected)
+           
+-----------
+      38418
+
+(1 rows affected)
+           
+-----------
+       5800
+
+(1 rows affected)
+           
+-----------
+      38630
+
+(1 rows affected)
+           
+-----------
+       5842
+
+(1 rows affected)

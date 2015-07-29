@@ -1,0 +1,30 @@
+Changed database context to 'LCCHPPublic'.
+                                               
+-----------------------------------------------
+Rows in lkPrimLanguage that are not in Language
+PrimLanguageCode
+----------------
+                                                    
+----------------------------------------------------
+comparing row counts for language and lkprimlanguage
+           
+-----------
+          4
+           
+-----------
+          4
+                                                     
+-----------------------------------------------------
+comparing row entries for language and lkprimlanguage
+LanguageID LanguageName                                       HistoricPrimaryLanguageCode
+---------- -------------------------------------------------- ---------------------------
+         1 English                                            E                          
+         2 Korean                                             K                          
+         3 Spanish                                            S                          
+         4 Vietnamese                                         V                          
+PrimLanguage         PrimLanguageCode
+-------------------- ----------------
+English              E               
+Korean               K               
+Spanish              S               
+Vietnamese           V               

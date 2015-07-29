@@ -1,0 +1,27 @@
+Changed database context to 'LCCHPPublic'.
+                                                           
+-----------------------------------------------------------
+comparing personstatus row count to lkchildstatus row count
+           
+-----------
+          5
+           
+-----------
+          5
+                                                         
+---------------------------------------------------------
+comparing personstatus contents to lkchildstatus contents
+HistoricPersonStatusID PersonStatusName                                  
+---------------------- --------------------------------------------------
+C                      Child                                             
+N                      Nursing                                           
+O                      Other                                             
+P                      Pregnant                                          
+Z                      Unknown                                           
+ChildStatusCode ChildStatus         
+--------------- --------------------
+C               Child               
+N               Nursing             
+O               Other               
+P               Pregnant            
+Z               Unknown             

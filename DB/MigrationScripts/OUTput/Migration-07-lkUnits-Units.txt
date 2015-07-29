@@ -1,0 +1,29 @@
+Changed database context to 'LCCHPPublic'.
+                            
+----------------------------
+inserting units from lkunits
+                          
+--------------------------
+inserting additional units
+                                                            
+------------------------------------------------------------
+listing units in Units - 2 more than lkunits: mg/kg and ug/L
+UnitsID Units                UnitsDescription                                                                                                                                                                                                                                              ModifiedDate            CreatedDate             HistoricUnitsCode
+------- -------------------- ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- ----------------------- ----------------------- -----------------
+      4 mg/cm2               NULL                                                                                                                                                                                                                                                                             NULL 2015-07-28 16:35:23.330 P                
+      6 mg/kg                NULL                                                                                                                                                                                                                                                                             NULL 2015-07-28 16:35:23.330 NULL             
+      5 ppb                  NULL                                                                                                                                                                                                                                                                             NULL 2015-07-28 16:35:23.330 W                
+      3 ppm                  NULL                                                                                                                                                                                                                                                                             NULL 2015-07-28 16:35:23.330 D                
+      1 ug/dl                NULL                                                                                                                                                                                                                                                                             NULL 2015-07-28 16:35:23.330 B                
+      2 ug/ft2               NULL                                                                                                                                                                                                                                                                             NULL 2015-07-28 16:35:23.330 C                
+      7 ug/L                 NULL                                                                                                                                                                                                                                                                             NULL 2015-07-28 16:35:23.330 NULL             
+                       
+-----------------------
+listing rows in lkUnits
+UnitsCode Units                                             
+--------- --------------------------------------------------
+P         mg/cm2                                            
+W         ppb                                               
+D         ppm                                               
+B         ug/dl                                             
+C         ug/ft2                                            

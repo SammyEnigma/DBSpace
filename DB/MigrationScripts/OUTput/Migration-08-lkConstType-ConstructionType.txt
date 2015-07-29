@@ -1,0 +1,33 @@
+Changed database context to 'LCCHPPublic'.
+                                                                          
+--------------------------------------------------------------------------
+comparing row count of ConstructionType to row count of lkConstructionType
+           
+-----------
+          8
+           
+-----------
+          8
+                                                                
+----------------------------------------------------------------
+comparing rows of ConstructionType to rows of lkConstructionType
+ConstructionTypeID ConstructionTypeName                               ConstructionTypeDescription                                                                                                                                                                                                                                   HistoricConstructionTypeID ModifiedDate            CreatedDate            
+------------------ -------------------------------------------------- ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- -------------------------- ----------------------- -----------------------
+                 1 Apartment                                          NULL                                                                                                                                                                                                                                                          A                                             NULL 2015-07-28 16:35:23.367
+                 2 Commercial only                                    NULL                                                                                                                                                                                                                                                          C                                             NULL 2015-07-28 16:35:23.367
+                 3 Modular                                            NULL                                                                                                                                                                                                                                                          D                                             NULL 2015-07-28 16:35:23.367
+                 4 Frame                                              NULL                                                                                                                                                                                                                                                          F                                             NULL 2015-07-28 16:35:23.367
+                 5 Mobile home                                        NULL                                                                                                                                                                                                                                                          M                                             NULL 2015-07-28 16:35:23.367
+                 6 Open Space                                         NULL                                                                                                                                                                                                                                                          O                                             NULL 2015-07-28 16:35:23.367
+                 7 Undevel lot/open spa                               NULL                                                                                                                                                                                                                                                          U                                             NULL 2015-07-28 16:35:23.367
+                 8 Unknown                                            NULL                                                                                                                                                                                                                                                          Z                                             NULL 2015-07-28 16:35:23.367
+ConstTypeCode ConstType           
+------------- --------------------
+A             Apartment           
+C             Commercial only     
+D             Modular             
+F             Frame               
+M             Mobile home         
+O             Open Space          
+U             Undevel lot/open spa
+Z             Unknown             

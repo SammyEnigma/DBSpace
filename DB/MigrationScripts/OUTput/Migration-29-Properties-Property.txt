@@ -1,0 +1,33 @@
+Changed database context to 'LCCHPPublic'.
+                             
+-----------------------------
+importing property attributes
+                       
+-----------------------
+inserting propertynotes
+                      
+----------------------
+updating modified date
+                                                                                                                   
+-------------------------------------------------------------------------------------------------------------------
+comparing row counts in property with modified dates to row counts in properties table where updatedate is not null
+           
+-----------
+       5800
+           
+-----------
+       5800
+                                                                       
+-----------------------------------------------------------------------
+comparing count of all rows in property to all rows in properties table
+           
+-----------
+       5842
+           
+-----------
+       5842
+                                              
+----------------------------------------------
+listing rows in Properties but not in property
+PropertyID  PropertyAddress                  
+----------- ---------------------------------

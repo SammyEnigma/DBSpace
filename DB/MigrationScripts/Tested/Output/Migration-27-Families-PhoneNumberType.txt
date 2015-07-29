@@ -1,0 +1,17 @@
+Changed database context to 'LCCHPPublic'.
+                           
+---------------------------
+inserting phonenumber types
+                          
+--------------------------
+listing phone number types
+PhoneNumberTypeID PhoneNumberTypeName                                CreatedDate             ModifiedDate            HistoricPhoneCode
+----------------- -------------------------------------------------- ----------------------- ----------------------- -----------------
+                1 Home Phone                                         2015-07-28 16:20:32.740                    NULL H                
+                2 Office                                             2015-07-28 16:20:32.740                    NULL O                
+                3 Unknown                                            2015-07-28 16:20:32.740                    NULL 0                
+                4 Uknown                                             2015-07-28 16:20:32.740                    NULL N                
+                5 Cell Phone                                         2015-07-28 16:20:32.740                    NULL C                
+                6 Unknown                                            2015-07-28 16:20:32.740                    NULL U                
+                7 Work Phone                                         2015-07-28 16:20:32.740                    NULL W                
+                8 Mobile Phone                                       2015-07-28 16:20:32.740                    NULL M                

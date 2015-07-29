@@ -1,0 +1,18 @@
+Changed database context to 'LCCHPTestImport'.
+Msg 2627, Level 14, State 1, Server WIN-1M8NQQ69OEH, Line 3
+Violation of UNIQUE KEY constraint 'IX_PhoneNumber'. Cannot insert duplicate key in object 'dbo.PhoneNumber'. The duplicate key value is (1000021912).
+The statement has been terminated.
+
+(1775 rows affected)
+
+(0 rows affected)
+           
+-----------
+       3874
+
+(1 rows affected)
+           
+-----------
+       3874
+
+(1 rows affected)

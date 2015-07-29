@@ -1,0 +1,98 @@
+Changed database context to 'LCCHPPublic'.
+                                          
+------------------------------------------
+inserting family to property relationships
+                                                                                                                                 
+---------------------------------------------------------------------------------------------------------------------------------
+comparing familytoproperty links vs familypropertylinks: difference should equal faimlypropertylink records with no property link
+           
+-----------
+       2465
+           
+-----------
+       2468
+                                                         
+---------------------------------------------------------
+counting familypropertylink records with no property link
+           
+-----------
+          3
+                                                            
+------------------------------------------------------------
+identifying familypropertylink records with no property link
+PropertyID  FamilyID    FPLinkStartDate                        FPLinkEndDate                          FPLinkTypeCode ReviewStatusCode UpdateDate                            
+----------- ----------- -------------------------------------- -------------------------------------- -------------- ---------------- --------------------------------------
+       NULL        1500                                   NULL                                   NULL NULL           0                                   2005-09-15 14:39:23
+       NULL         309                                   NULL                                   NULL NULL           2                                   2010-09-01 14:58:45
+       NULL        1954                                   NULL                                   NULL NULL           0                                   2011-01-31 13:27:01
+                                                                      
+----------------------------------------------------------------------
+listing Families with more than 1 property relationship in LCCHPPublic
+HistoricFamilyID HistoricPropertyID CountRelats
+---------------- ------------------ -----------
+            1256              10307           3
+            1371              10444           2
+            1686              10535           2
+            1388              10548           2
+            1858              10556           2
+            1363              10632           2
+            1645              10843           2
+             818                716           2
+            1420                975           2
+            1791               1496           2
+             888               6830           2
+             318               6844           2
+             309               6895           2
+            1619               6901           2
+            1185               6921           2
+            1213               6969           2
+            1226               7545           2
+             662               8491           2
+            1135               8798           2
+            1527               8920           2
+            1611               9246           2
+             179               9905           2
+            1146              10018           2
+            1194              10045           2
+            1329              10121           2
+             951              10217           2
+                                                                      
+----------------------------------------------------------------------
+listing Families with more than 1 property relationship in LCCHPImport
+FamilyID    PropertyID  CountRelats
+----------- ----------- -----------
+       1256       10307           3
+       1371       10444           2
+       1686       10535           2
+       1388       10548           2
+       1858       10556           2
+       1363       10632           2
+       1645       10843           2
+        818         716           2
+       1420         975           2
+       1791        1496           2
+        888        6830           2
+        318        6844           2
+        309        6895           2
+       1619        6901           2
+       1185        6921           2
+       1213        6969           2
+       1226        7545           2
+        662        8491           2
+       1135        8798           2
+       1527        8920           2
+       1611        9246           2
+        179        9905           2
+       1146       10018           2
+       1194       10045           2
+       1329       10121           2
+        951       10217           2
+                                                              
+--------------------------------------------------------------
+comparing row count of Familytoproperty and FamilyPropertyLink
+           
+-----------
+       2465
+           
+-----------
+       2465

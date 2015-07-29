@@ -1,0 +1,51 @@
+Changed database context to 'LCCHPPublic'.
+                                
+--------------------------------
+insering rows into questionnaire
+                                             
+---------------------------------------------
+inserting questionnaire notes from Othernotes
+                                               
+-----------------------------------------------
+inserting questoinnairenotes from daycare notes
+                                         
+-----------------------------------------
+adding remodel date to questionnairenotes
+                                        
+----------------------------------------
+adding paint date to questionnaire notes
+                      
+----------------------
+updating modified date
+                                                             
+-------------------------------------------------------------
+comparing questionnaire row count to questionnaires row count
+           
+-----------
+          0
+           
+-----------
+       6844
+                                                                                          
+------------------------------------------------------------------------------------------
+comparing groupings by remodel date of questionnaire row count to questionnaires row count
+           
+-----------
+          0
+           
+-----------
+       6007
+                                                                                        
+----------------------------------------------------------------------------------------
+comparing groupings by paint date of questionnaire row count to questionnaires row count
+           
+-----------
+          0
+           
+-----------
+        145
+                                                     
+-----------------------------------------------------
+list rows in questionnaires with a blank paintBldgAge
+ChildID     QuestDate                              PaintBldgAge PaintDate       
+----------- -------------------------------------- ------------ ----------------

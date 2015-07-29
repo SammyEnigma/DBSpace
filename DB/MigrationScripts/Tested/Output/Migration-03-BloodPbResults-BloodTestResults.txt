@@ -1,0 +1,35 @@
+Changed database context to 'LCCHPTestImport'.
+
+(7019 rows affected)
+
+(4614 rows affected)
+
+(1283 rows affected)
+
+(11 rows affected)
+
+(10 rows affected)
+
+(1 rows affected)
+
+(1 rows affected)
+
+(3 rows affected)
+
+(2 rows affected)
+
+(14038 rows affected)
+           
+-----------
+      14038
+
+(1 rows affected)
+           
+-----------
+       7019
+
+(1 rows affected)
+analysisID              
+------------------------
+
+(0 rows affected)

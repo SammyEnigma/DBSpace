@@ -1,0 +1,39 @@
+Changed database context to 'LCCHPPublic'.
+ContactTypeCode
+---------------
+                                                                
+----------------------------------------------------------------
+comparing row count of ContactType to row count of lkcontactType
+           
+-----------
+         10
+           
+-----------
+         10
+                                                                
+----------------------------------------------------------------
+comparing row count of contacttype to row count of lkContactType
+HistoricContactTypeID ContactTypeDescription                                                                                                                                                                                                                                       
+--------------------- -------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
+B                     Initiated throught the ICO                                                                                                                                                                                                                                   
+C                     Initiated by calling Kids First                                                                                                                                                                                                                              
+D                     Initiated by door to door survey                                                                                                                                                                                                                             
+F                     Final Results Released                                                                                                                                                                                                                                       
+I                     Initiated through the land owner-multi-unit areas                                                                                                                                                                                                            
+L                     Lake County Survey                                                                                                                                                                                                                                           
+O                     Owner Preliminary Results Released                                                                                                                                                                                                                           
+P                     Preliminary Results Released                                                                                                                                                                                                                                 
+Q                     Initiated by another KF family                                                                                                                                                                                                                               
+W                     Owner Final Results Released                                                                                                                                                                                                                                 
+ContactTypeCode ContactType                                       
+--------------- --------------------------------------------------
+B               Initiated throught the ICO                        
+C               Initiated by calling Kids First                   
+D               Initiated by door to door survey                  
+F               Final Results Released                            
+I               Initiated through the land owner-multi-unit areas 
+L               Lake County Survey                                
+O               Owner Preliminary Results Released                
+P               Preliminary Results Released                      
+Q               Initiated by another KF family                    
+W               Owner Final Results Released                      

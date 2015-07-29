@@ -1,0 +1,19 @@
+Changed database context to 'LCCHPPublic'.
+                                    
+------------------------------------
+inserting phonenumbers from families
+                           
+---------------------------
+inserting phonenumber types
+                          
+--------------------------
+updating phonenumber types
+                                                                                        
+----------------------------------------------------------------------------------------
+comparing counts of phonenumbers to count of distinct phonenumbers in the families table
+           
+-----------
+       1907
+           
+-----------
+       1907

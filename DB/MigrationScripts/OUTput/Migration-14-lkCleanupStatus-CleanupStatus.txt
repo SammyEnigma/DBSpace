@@ -1,0 +1,48 @@
+Changed database context to 'LCCHPPublic'.
+                                                                 
+-----------------------------------------------------------------
+identifying rows in lkcleanupstatus that are not in Cleanupstatus
+CleanupStatusCode
+-----------------
+                                                                    
+--------------------------------------------------------------------
+comparing row count of CleanupStatus to row count of lkCleanupStatus
+           
+-----------
+         13
+           
+-----------
+         13
+                                                          
+----------------------------------------------------------
+comparing rows of CleanupStatus to rows of lkCleanupStatus
+HistoricCleanupStatusID CleanupStatusName                                 
+----------------------- --------------------------------------------------
+A                       Sampling Pending                                  
+B                       Developing Designs                                
+C                       Completed                                         
+D                       Denied Access                                     
+F                       Final/Completed                                   
+H                       Holding for Access                                
+K                       Kids first program                                
+N                       Never Continued                                   
+O                       Out of program                                    
+P                       Partially complete                                
+S                       Survey Only                                       
+W                       Pending remediation                               
+Z                       Unknown                                           
+CleanupStatusCode CleanupStatus       
+----------------- --------------------
+A                 Sampling Pending    
+B                 Developing Designs  
+C                 Completed           
+D                 Denied Access       
+F                 Final/Completed     
+H                 Holding for Access  
+K                 Kids first program  
+N                 Never Continued     
+O                 Out of program      
+P                 Partially complete  
+S                 Survey Only         
+W                 Pending remediation 
+Z                 Unknown             

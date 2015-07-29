@@ -1,0 +1,28 @@
+Changed database context to 'LCCHPPublic'.
+                                                 
+-------------------------------------------------
+Rows in lkdatareview that are not in ReviewStatus
+ReviewStatusCode
+----------------
+                                                    
+----------------------------------------------------
+comparing row count of ReviewStatus and lkdataReview
+           
+-----------
+          3
+           
+-----------
+          3
+                                               
+-----------------------------------------------
+listing ReviewStatus rows and lkDataReview rows
+HistoricReviewStatusID ReviewStatusName                                  
+---------------------- --------------------------------------------------
+0                      Entered                                           
+1                      Imported                                          
+2                      Checked                                           
+ReviewStatusCode ReviewStatus                                      
+---------------- --------------------------------------------------
+0                Entered                                           
+1                Imported                                          
+2                Checked                                           

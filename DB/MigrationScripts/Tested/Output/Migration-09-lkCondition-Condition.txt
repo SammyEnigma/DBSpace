@@ -1,0 +1,38 @@
+Changed database context to 'LCCHPPublic'.
+                                                           
+-----------------------------------------------------------
+listing conditions in lkcondition that are not in Condition
+ConditionCode
+-------------
+                                                            
+------------------------------------------------------------
+comparing row count of condition to row count of lkcondition
+           
+-----------
+          8
+           
+-----------
+          8
+                                                  
+--------------------------------------------------
+comparing rows of condition to rows of lkcondition
+HistoricConditionID ConditionName                                     
+------------------- --------------------------------------------------
+B                   Bare soils                                        
+D                   Dense vegetation                                  
+F                   Fair paint                                        
+G                   Good paint                                        
+N                   Seasonally bare                                   
+P                   Poor paint                                        
+R                   Replacement Soil                                  
+S                   Spotty vegetation                                 
+ConditionCode Condition                                         
+------------- --------------------------------------------------
+B             Bare soils                                        
+D             Dense vegetation                                  
+F             Fair paint                                        
+G             Good paint                                        
+N             Seasonally bare                                   
+P             Poor paint                                        
+R             Replacement Soil                                  
+S             Spotty vegetation                                 

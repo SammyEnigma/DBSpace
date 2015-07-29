@@ -1,0 +1,37 @@
+Changed database context to 'LCCHPTestImport'.
+
+(4 rows affected)
+FrequencyCode           
+------------------------
+
+(0 rows affected)
+           
+-----------
+          8
+
+(1 rows affected)
+           
+-----------
+          4
+
+(1 rows affected)
+FrequencyID FrequencyDescription                                                                                                                                                                                                                                          FrequencyName                                      HistoricFrequencyID ModifiedDate            CreatedDate            
+----------- ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- -------------------------------------------------- ------------------- ----------------------- -----------------------
+          1 NULL                                                                                                                                                                                                                                                          Very Little                                        1                                      NULL 2015-07-22 22:20:44.223
+          2 NULL                                                                                                                                                                                                                                                          Once or twice a day                                2                                      NULL 2015-07-22 22:20:44.223
+          3 NULL                                                                                                                                                                                                                                                          More than twice per day                            3                                      NULL 2015-07-22 22:20:44.223
+          4 NULL                                                                                                                                                                                                                                                          Many Times per day                                 4                                      NULL 2015-07-22 22:20:44.223
+          5 NULL                                                                                                                                                                                                                                                          Very Little                                        1                                      NULL 2015-07-28 16:20:25.683
+          6 NULL                                                                                                                                                                                                                                                          Once or twice a day                                2                                      NULL 2015-07-28 16:20:25.683
+          7 NULL                                                                                                                                                                                                                                                          More than twice per day                            3                                      NULL 2015-07-28 16:20:25.683
+          8 NULL                                                                                                                                                                                                                                                          Many Times per day                                 4                                      NULL 2015-07-28 16:20:25.683
+
+(8 rows affected)
+FrequencyCode            Frequency                                                                                                                                                                                                                                                       
+------------------------ ----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
+                     1.0 Very Little                                                                                                                                                                                                                                                     
+                     2.0 Once or twice a day                                                                                                                                                                                                                                             
+                     3.0 More than twice per day                                                                                                                                                                                                                                         
+                     4.0 Many Times per day                                                                                                                                                                                                                                              
+
+(4 rows affected)

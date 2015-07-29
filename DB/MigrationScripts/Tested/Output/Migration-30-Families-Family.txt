@@ -1,0 +1,30 @@
+Changed database context to 'LCCHPPublic'.
+                                
+--------------------------------
+inserting rows into family table
+                                       
+---------------------------------------
+inserting family notes from hobby notes
+                                      
+--------------------------------------
+inserting family notes from occupNotes
+                                      
+--------------------------------------
+inserting family notes from othernotes
+                      
+----------------------
+updating modified date
+                                                
+------------------------------------------------
+comparing counts of family rows to families rows
+           
+-----------
+       1937
+           
+-----------
+       1937
+                                          
+------------------------------------------
+listing rows in Families but not in Family
+FamilyID    P1LastName                                        
+----------- --------------------------------------------------

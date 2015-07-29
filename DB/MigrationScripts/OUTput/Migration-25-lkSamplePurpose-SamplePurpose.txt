@@ -1,0 +1,32 @@
+Changed database context to 'LCCHPPublic'.
+                                                     
+-----------------------------------------------------
+Rows in lkSamplePurpose that are not in SamplePurpose
+SamplePurposeCode
+-----------------
+                                                                    
+--------------------------------------------------------------------
+comparing row count of SamplePurpose to row count of lkSamplePurpose
+           
+-----------
+          5
+           
+-----------
+          5
+                                                          
+----------------------------------------------------------
+comparing rows of SamplePurpose to rows of lkSamplePurpose
+HistoricSamplePurposeID SamplePurposeName                                 
+----------------------- --------------------------------------------------
+C                       Clearance                                         
+F                       Confirmation                                      
+I                       Investigation                                     
+R                       Resample                                          
+S                       Stockpile                                         
+SamplePurposeCode SamplePurpose       
+----------------- --------------------
+C                 Clearance           
+F                 Confirmation        
+I                 Investigation       
+R                 Resample            
+S                 Stockpile           

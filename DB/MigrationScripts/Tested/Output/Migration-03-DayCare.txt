@@ -1,0 +1,9 @@
+Changed database context to 'LCCHPPublic'.
+DaycareID   DaycareName                                       
+----------- --------------------------------------------------
+          1 Daycare                                           
+          4 Headstart                                         
+          3 Morning Star                                      
+          6 None                                              
+          5 Other                                             
+          2 Preschool                                         

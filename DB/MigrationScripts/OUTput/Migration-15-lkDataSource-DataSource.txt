@@ -1,0 +1,44 @@
+Changed database context to 'LCCHPPublic'.
+                                               
+-----------------------------------------------
+Rows in lkdatasource that are not in datasource
+DataSourceCode
+--------------
+                                                  
+--------------------------------------------------
+comparing row count of datasource and lkdatasource
+           
+-----------
+         11
+           
+-----------
+         11
+                                             
+---------------------------------------------
+listing datasource rows and lkdatasource rows
+HistoricDataSourceID DataSourceDescription                                                                                                                                                                                                                                        
+-------------------- -------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
+A                    ACZ Laboratory                                                                                                                                                                                                                                               
+B                    Bornschein Results 1991                                                                                                                                                                                                                                      
+C                    Core Laboratories                                                                                                                                                                                                                                            
+E                    Evergreen Laboratory                                                                                                                                                                                                                                         
+G                    Gobbel-Hayes Partners (XRF)                                                                                                                                                                                                                                  
+L                    Colorado Analytical Laboratory (CAL)                                                                                                                                                                                                                         
+M                    MFG, Inc.                                                                                                                                                                                                                                                    
+R                    Reservoir Laboratory                                                                                                                                                                                                                                         
+S                    Severn Trent                                                                                                                                                                                                                                                 
+T                    Technical Services Center Laboratory                                                                                                                                                                                                                         
+Y                    Analytica                                                                                                                                                                                                                                                    
+DataSourceCode DataSource                                        
+-------------- --------------------------------------------------
+A              ACZ Laboratory                                    
+B              Bornschein Results 1991                           
+C              Core Laboratories                                 
+E              Evergreen Laboratory                              
+G              Gobbel-Hayes Partners (XRF)                       
+L              Colorado Analytical Laboratory (CAL)              
+M              MFG, Inc.                                         
+R              Reservoir Laboratory                              
+S              Severn Trent                                      
+T              Technical Services Center Laboratory              
+Y              Analytica                                         

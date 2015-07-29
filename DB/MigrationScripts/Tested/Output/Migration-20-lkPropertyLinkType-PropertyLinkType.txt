@@ -1,0 +1,36 @@
+Changed database context to 'LCCHPPublic'.
+                                                     
+-----------------------------------------------------
+Rows in lkFPLinkType that are not in PropertyLinkType
+FPLinkTypeCode
+--------------
+                                                 
+-------------------------------------------------
+First count should be 1 greater than second count
+                                                        
+--------------------------------------------------------
+comparing row count of PropertyLinkType and lkFPLinkTYpe
+           
+-----------
+          6
+           
+-----------
+          5
+                                                  
+--------------------------------------------------
+listing propertylinktype rows and lkFPLinkTyp rows
+HistoricPropertyLinkTypeID PropertyLinkTypeName                              
+-------------------------- --------------------------------------------------
+L                          Leasing/renting                                   
+N                          Non-resident owner                                
+O                          Owner occupant                                    
+R                          Non-owner resident                                
+Z                          Other/unknown                                     
+NULL                       Mailing address                                   
+FPLinkTypeCode FPLinkType          
+-------------- --------------------
+L              Leasing/renting     
+N              Non-resident owner  
+O              Owner occupant      
+R              Non-owner resident  
+Z              Other/unknown       

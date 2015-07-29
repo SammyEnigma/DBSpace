@@ -1,0 +1,52 @@
+Changed database context to 'LCCHPPublic'.
+                                   
+-----------------------------------
+Rows in lkFlag that are not in Flag
+FlagCode
+--------
+                                      
+--------------------------------------
+comparing row count of Flag and lkFlag
+           
+-----------
+         15
+           
+-----------
+         15
+                                 
+---------------------------------
+listing Flag rows and lkFlag rows
+FlagID FlagDescription                                                                                                                                                                                                                                               FlagName                                           HistoricFlagID ModifiedDate            CreatedDate            
+------ ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- -------------------------------------------------- -------------- ----------------------- -----------------------
+     1 Result not available                                                                                                                                                                                                                                          NULL                                               a                                 NULL 2015-07-28 16:35:23.820
+     2 b - lab assigned, >MDL and < PQL                                                                                                                                                                                                                              NULL                                               b                                 NULL 2015-07-28 16:35:23.820
+     3 c - lab confirmation of XRF                                                                                                                                                                                                                                   NULL                                               c                                 NULL 2015-07-28 16:35:23.820
+     4 d - lab assigned, detected in blank and sample                                                                                                                                                                                                                NULL                                               d                                 NULL 2015-07-28 16:35:23.820
+     5 f - XRF duplicate reading on same sample                                                                                                                                                                                                                      NULL                                               f                                 NULL 2015-07-28 16:35:23.820
+     6 g - XRF average value from replicate analyses                                                                                                                                                                                                                 NULL                                               g                                 NULL 2015-07-28 16:35:23.820
+     7 j - validation flag, estimated value                                                                                                                                                                                                                          NULL                                               j                                 NULL 2015-07-28 16:35:23.820
+     8 l - less than detection limit                                                                                                                                                                                                                                 NULL                                               l                                 NULL 2015-07-28 16:35:23.820
+     9 n - not sampled                                                                                                                                                                                                                                               NULL                                               n                                 NULL 2015-07-28 16:35:23.820
+    10 q - lab assigned, uncertain value                                                                                                                                                                                                                             NULL                                               q                                 NULL 2015-07-28 16:35:23.820
+    11 r - input, lab, and validation flag, unusable data                                                                                                                                                                                                            NULL                                               r                                 NULL 2015-07-28 16:35:23.820
+    12 u - validation flag, not detectable                                                                                                                                                                                                                           NULL                                               u                                 NULL 2015-07-28 16:35:23.820
+    13 Detected value                                                                                                                                                                                                                                                NULL                                               v                                 NULL 2015-07-28 16:35:23.820
+    14 w - validation flag, estimated result <MDL                                                                                                                                                                                                                    NULL                                               w                                 NULL 2015-07-28 16:35:23.820
+    15 y - exceeds the calibration estimated value only                                                                                                                                                                                                              NULL                                               y                                 NULL 2015-07-28 16:35:23.820
+FlagCode Flag                                              
+-------- --------------------------------------------------
+a        Result not available                              
+b        b - lab assigned, >MDL and < PQL                  
+c        c - lab confirmation of XRF                       
+d        d - lab assigned, detected in blank and sample    
+f        f - XRF duplicate reading on same sample          
+g        g - XRF average value from replicate analyses     
+j        j - validation flag, estimated value              
+l        l - less than detection limit                     
+n        n - not sampled                                   
+q        q - lab assigned, uncertain value                 
+r        r - input, lab, and validation flag, unusable data
+u        u - validation flag, not detectable               
+v        Detected value                                    
+w        w - validation flag, estimated result <MDL        
+y        y - exceeds the calibration estimated value only  
